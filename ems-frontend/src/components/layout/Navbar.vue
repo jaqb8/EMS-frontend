@@ -1,25 +1,25 @@
 <template>
-  <header class="header">
-    <h1>Employee Management System</h1>
-  </header>
+  <nav>
+    <v-app-bar app flat color="blue darken-2" dark>
+      <v-toolbar-title class="ml-6">
+        <span class="font-weight-bold">EMS</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn outlined class="mr-6">Login</v-btn>
+    </v-app-bar>
+  </nav>
 </template>
 
 <script>
 export default {
-  name: "Navbar",
+  name: 'Navbar'
 };
 </script>
 
-<style scoped>
-.header {
-  background: #333;
-  color: #fff;
-  text-align: center;
-  padding: 10px;
-}
-
-.header a {
-  color: #fff;
-  padding-right: 5px;
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 </style>
