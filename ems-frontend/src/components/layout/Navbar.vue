@@ -5,14 +5,28 @@
         <span class="font-weight-bold">EMS</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn outlined class="mr-6">Login</v-btn>
+      <div class="mr-6" v-if="getUser">
+        <v-icon>mdi-account-circle</v-icon>
+        <span class="pa-2 text-overline">{{ getUser }}</span>
+      </div>
+      <v-btn v-if="!getUser" outlined class="mr-6">Login</v-btn>
+      <v-btn v-else outlined class="mr-6" @click="onLogout">Logout</v-btn>
     </v-app-bar>
   </nav>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  computed: mapGetters(['getUser']),
+  methods: {
+    ...mapActions(['logoutUser']),
+    onLogout() {
+      this.logoutUser();
+    }
+  }
 };
 </script>
 
