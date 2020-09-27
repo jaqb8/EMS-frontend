@@ -1,0 +1,211 @@
+<template>
+  <div class="form-container">
+    <div class="form-top-bar">
+      <div class="bar-top-line"></div>
+      <div class="bar-bottom-container">
+        <h1>EMS</h1>
+        <p>Login</p>
+      </div>
+    </div>
+    <form>
+      <div class="input-container">
+          <label for="email" ref="emailLabel">E-mail</label>
+          <input @focus="onFocus()" 
+                @blur="activeClassClear()" 
+                id="email" 
+                type="text"
+                ref="emailInput">
+          <div class="bottom-line-wrapper">
+            <span ref="emailSpan"></span>
+          </div>
+      </div>
+      <div class="input-container">
+          <label for="password" ref="passwordLabel">Password</label>
+          <input @focus="onFocus()" 
+                @blur="activeClassClear()" 
+                id="password" 
+                type="password"
+                ref="passwordInput">
+                
+          <div class="bottom-line-wrapper">
+            <span ref="passwordSpan"></span>
+          </div>
+      </div>
+      <button id="form-submit-btn">Login</button>
+    </form>
+    <p class="create-account">Or create an account if you don’t have it yet.
+You can do it <router-link to="/register">here</router-link>.</p>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Login",
+  data (){
+    return {
+      // focused: false
+    }
+  },
+  methods: {
+    activeClassClear(){
+      if(this.$refs.passwordInput.value === "") {
+        this.$refs.passwordLabel.classList.remove("active");
+        this.$refs.passwordSpan.classList.remove("active");
+      }
+      if(this.$refs.emailInput.value === "") {
+         this.$refs.emailLabel.classList.remove("active");
+         this.$refs.emailSpan.classList.remove("active");
+      }
+    },
+    onFocus(){
+      if(document.activeElement.id === "password"){
+        this.activeClassClear();
+        this.$refs.passwordLabel.classList.add("active");
+        this.$refs.passwordSpan.classList.add("active");
+      }else if(document.activeElement.id === "email"){
+        this.activeClassClear();
+        this.$refs.emailLabel.classList.add("active");
+        this.$refs.emailSpan.classList.add("active");
+      }
+    }
+  }
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style>
+  .form-container{
+    min-height: 280px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 10px;
+    padding-bottom: 10%;
+  }
+  .form-top-bar{
+    background: #2B7AF0;
+    border-radius: 10px 10px 0px 0px;
+    overflow: hidden;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+  .bar-top-line{
+    height: 25px;
+    width: 100%;
+    background: #525457;
+    opacity: .5;
+  }
+  .bar-bottom-container{
+    text-align: left;
+    padding: 20px 0 20px 5%;
+  }
+  .bar-bottom-container h1{
+    font-size: 30px;
+    font-weight: bold;
+    line-height: 37px;
+    margin: 0;
+    color: #FFFFFF;
+  }
+  .bar-bottom-container p{
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 24px;
+    margin: 0;
+    color: #FFFFFF;
+    opacity: 0.5;
+  }
+  form{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: 5% auto 0;
+    padding: 40px 0;
+  }
+  form input{
+    width: 95%;
+    display: block;
+    border: none;
+    font-size: 30px;
+    margin: 20px auto;
+    text-indent: 15px;
+    transition: .3s;
+  }
+  .input-container span.active{
+    left: 50%;
+  }
+  form button{
+    background: #2B7AF0;
+    height: 50px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin: 50px 0;
+    font-size: 30px;
+    cursor: pointer;
+  }
+  .create-account{
+    width: 60%;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .input-container{
+    position: relative;
+    display: flex;
+    margin: 0 0 20px 0;
+  }
+  .input-container label{
+    position: absolute;
+    top: 45%;
+    left: 25px;
+    transform: translateY(-50%);
+    font-size: 30px;
+    letter-spacing: 2px;
+    font-weight: 500px;
+    transition: 0.4s;
+  }
+  .input-container label[for="password"].active{
+    transform: scale(0.5) translate(-75px, -100px);
+    color: #2163C7;
+  }
+  .input-container label[for="email"].active{
+    transform: scale(0.5) translate(-50px, -100px);
+    color: #2163C7;
+  }
+  .input-container::after{
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 95%;
+    height: 2px;
+    transform: translateX(-50%);
+    background: #c4c4c4;
+  }
+  .bottom-line-wrapper{
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 95%;
+    height: 2px;
+    transform: translateX(-50%);
+    overflow: hidden;
+    z-index: 1;
+  }
+  .bottom-line-wrapper span.active{
+    position: absolute;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: #2163C7;
+    transform: translateX(-250%);
+    z-index: 1;
+    animation: bottomInputBar .4s forwards;
+  }
+  @keyframes bottomInputBar {
+    0%{
+      transform: translateX(-250%);
+    }
+    100%{
+      transform: translateX(-50%);
+    }
+  }
+</style>
