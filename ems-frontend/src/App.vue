@@ -1,10 +1,11 @@
 <template>
   <div id="app">
+    <Navbar />
     <div id="nav">
-      <router-link to="/">Home</router-link> |
+      <!-- <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/login">Login</router-link> |
-      <router-link to="/register">Register</router-link>
+      <router-link to="/register">Register</router-link> -->
     </div>
     <router-view />
   </div>
@@ -27,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-/* .v-application {
-  background-color: black;
-} */
+  #app {
+    width: 100%;
+  }
 </style>

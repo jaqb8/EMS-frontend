@@ -31,6 +31,10 @@
             <span ref="passwordSpan"></span>
           </div>
       </div>
+      <div class="keepMeLogIn__container">
+        <input type="checkbox" name="keepLogIn" id="keepMeLogIn">
+        <label for="keepMeLogIn" class="keepMeLogIn__text">Angemeldet bleiben</label>
+      </div>
       <button id="form-submit-btn">Login</button>
     </form>
     <p class="create-account">Or create an account if you don’t have it yet.
@@ -119,7 +123,7 @@ export default {
     margin: 5% auto 0;
     padding: 40px 0;
   }
-  form input{
+  form input:not([type="checkbox"]){
     width: 95%;
     display: block;
     border: none;
@@ -127,6 +131,7 @@ export default {
     margin: 20px auto;
     text-indent: 15px;
     transition: .3s;
+    cursor: pointer;
   }
   .input-container span.active{
     left: 50%;
@@ -161,6 +166,7 @@ export default {
     letter-spacing: 2px;
     font-weight: 500px;
     transition: 0.4s;
+    cursor: pointer;
   }
   .input-container label[for="password"].active{
     transform: scale(0.5) translate(-75px, -100px);
@@ -207,5 +213,17 @@ export default {
     100%{
       transform: translateX(-50%);
     }
+  }
+  .keepMeLogIn__container{
+    display: flex;
+    align-items: center;
+  }
+  #keepMeLogIn{
+    margin-left: 5%;
+    margin-right: 10px;
+  }
+  .keepMeLogIn__text{
+    display: block;
+    cursor: pointer;
   }
 </style>
