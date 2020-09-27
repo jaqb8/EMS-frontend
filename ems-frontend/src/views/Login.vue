@@ -34,3 +34,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+  .login{ 
+    width: 35%;
+    margin: 0 auto;
+  }
+</style>
