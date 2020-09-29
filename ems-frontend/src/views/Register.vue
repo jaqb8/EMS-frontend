@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="register">
     <Register/>
   </div>
 </template>
@@ -34,3 +34,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.register{ 
+    width: 35%;
+    margin: 0 auto;
+  }
+</style>
