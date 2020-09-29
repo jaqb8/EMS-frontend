@@ -43,6 +43,7 @@ You can do it <router-link to="/register">here</router-link>.</p>
 </template>
 
 <script>
+// import { mixin } from '../utils/loginRegisterScripts.js'
 export default {
   name: "Login",
   data (){
@@ -50,6 +51,7 @@ export default {
       // focused: false
     }
   },
+  // mixins: [mixin],
   methods: {
     activeClassClear(){
       if(this.$refs.passwordInput.value === "") {
@@ -75,155 +77,8 @@ export default {
   }
 };
 </script>
-
+      }
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  .form-container{
-    min-height: 280px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 10px;
-    padding-bottom: 10%;
-  }
-  .form-top-bar{
-    background: #2B7AF0;
-    border-radius: 10px 10px 0px 0px;
-    overflow: hidden;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  }
-  .bar-top-line{
-    height: 25px;
-    width: 100%;
-    background: #525457;
-    opacity: .5;
-  }
-  .bar-bottom-container{
-    text-align: left;
-    padding: 20px 0 20px 5%;
-  }
-  .bar-bottom-container h1{
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 37px;
-    margin: 0;
-    color: #FFFFFF;
-  }
-  .bar-bottom-container p{
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 24px;
-    margin: 0;
-    color: #FFFFFF;
-    opacity: 0.5;
-  }
-  form{
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    margin: 5% auto 0;
-    padding: 40px 0;
-  }
-  form input:not([type="checkbox"]){
-    width: 95%;
-    display: block;
-    border: none;
-    font-size: 30px;
-    margin: 20px auto;
-    text-indent: 15px;
-    transition: .3s;
-    cursor: pointer;
-  }
-  .input-container span.active{
-    left: 50%;
-  }
-  form button{
-    background: #2B7AF0;
-    height: 50px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border: none;
-    color: white;
-    border-radius: 5px;
-    margin: 50px 0;
-    font-size: 30px;
-    cursor: pointer;
-  }
-  .create-account{
-    width: 60%;
-    text-align: center;
-    margin: 0 auto;
-  }
-  .input-container{
-    position: relative;
-    display: flex;
-    margin: 0 0 20px 0;
-  }
-  .input-container label{
-    position: absolute;
-    top: 45%;
-    left: 25px;
-    transform: translateY(-50%);
-    font-size: 30px;
-    letter-spacing: 2px;
-    font-weight: 500px;
-    transition: 0.4s;
-    cursor: pointer;
-  }
-  .input-container label[for="password"].active{
-    transform: scale(0.5) translate(-75px, -100px);
-    color: #2163C7;
-  }
-  .input-container label[for="email"].active{
-    transform: scale(0.5) translate(-50px, -100px);
-    color: #2163C7;
-  }
-  .input-container::after{
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 95%;
-    height: 2px;
-    transform: translateX(-50%);
-    background: #c4c4c4;
-  }
-  .bottom-line-wrapper{
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: 95%;
-    height: 2px;
-    transform: translateX(-50%);
-    overflow: hidden;
-    z-index: 1;
-  }
-  .bottom-line-wrapper span.active{
-    position: absolute;
-    left: 50%;
-    width: 100%;
-    height: 2px;
-    background: #2163C7;
-    transform: translateX(-250%);
-    z-index: 1;
-    animation: bottomInputBar .4s forwards;
-  }
-  @keyframes bottomInputBar {
-    0%{
-      transform: translateX(-250%);
-    }
-    100%{
-      transform: translateX(-50%);
-    }
-  }
-  .keepMeLogIn__container{
-    display: flex;
-    align-items: center;
-  }
-  #keepMeLogIn{
-    margin-left: 5%;
-    margin-right: 10px;
-  }
-  .keepMeLogIn__text{
-    display: block;
-    cursor: pointer;
-  }
+  
 </style>

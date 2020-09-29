@@ -54,15 +54,19 @@ export default {
   .nav__left-container, 
   .nav__right-container{
     display: flex;
+    align-items: center;
     width: 50%;
     padding: 0 15px 0 30px;
   }
   .nav__right-container{
     justify-content: flex-end;
-    padding: 0 30px 0 15px;
   }
   .nav__icon-container{
     display: flex;
+    margin-right: 60px;
+  }
+  .nav__icon{
+    margin-right: 5px;
   }
   .nav__button-container button{
     width: 140px;
