@@ -9,91 +9,104 @@
     </div>
     <form>
       <div class="input-container">
-          <label for="email" ref="emailLabel">E-mail</label>
-          <input @focus="onFocus()" 
-                @blur="activeClassClear()" 
-                id="email" 
-                type="text"
-                ref="emailInput">
-          <div class="bottom-line-wrapper">
-            <span ref="emailSpan"></span>
-          </div>
+        <label for="email" ref="emailLabel">E-mail</label>
+        <input
+          @focus="onFocus()"
+          @blur="activeClassClear()"
+          id="email"
+          type="text"
+          ref="emailInput"
+          v-model="email"
+        />
+        <div class="bottom-line-wrapper">
+          <span ref="emailSpan"></span>
+        </div>
       </div>
       <div class="input-container">
-          <label for="password" ref="passwordLabel">Password</label>
-          <input @focus="onFocus()" 
-                @blur="activeClassClear()" 
-                id="password" 
-                type="password"
-                ref="passwordInput">
-                
-          <div class="bottom-line-wrapper">
-            <span ref="passwordSpan"></span>
-          </div>
+        <label for="password" ref="passwordLabel">Password</label>
+        <input
+          @focus="onFocus()"
+          @blur="activeClassClear()"
+          id="password"
+          type="password"
+          ref="passwordInput"
+          v-model="password"
+        />
+
+        <div class="bottom-line-wrapper">
+          <span ref="passwordSpan"></span>
+        </div>
       </div>
       <div class="input-container">
-          <label for="password2" ref="passwordLabel2">Repeat password</label>
-          <input @focus="onFocus()" 
-                @blur="activeClassClear()" 
-                id="password2" 
-                type="password"
-                ref="passwordInput2">
-                
-          <div class="bottom-line-wrapper">
-            <span ref="passwordSpan2"></span>
-          </div>
+        <label for="password2" ref="passwordLabel2">Repeat password</label>
+        <input
+          @focus="onFocus()"
+          @blur="activeClassClear()"
+          id="password2"
+          type="password"
+          ref="passwordInput2"
+          v-model="password2"
+        />
+
+        <div class="bottom-line-wrapper">
+          <span ref="passwordSpan2"></span>
+        </div>
       </div>
       <div class="agreement__container">
-        <input type="checkbox" name="agreement" id="agreement">
-        <label for="agreement" class="agreement__text">Ich stimme der Betreuung eines Kindes mit Asperger-Syndrom namens Tomasz und Kulig zu</label>
+        <input type="checkbox" name="agreement" id="agreement" />
+        <label for="agreement" class="agreement__text"
+          >Ich stimme der Betreuung eines Kindes mit Asperger-Syndrom namens
+          Tomasz und Kulig zu</label
+        >
       </div>
-      <button id="form-submit-btn">Register</button>
+      <button @click="register" id="form-submit-btn">Register</button>
     </form>
   </div>
 </template>
 
 <script>
+import { mixin } from '../utils/loginRegisterScripts.js';
+import axios from 'axios';
+
 export default {
-  name: "Login",
-  data (){
+  name: 'Register',
+  data() {
     return {
-      msg: 'Welcome'
-    }
+      email: '',
+      password: '',
+      password2: ''
+    };
   },
+  mixins: [mixin],
   methods: {
-    activeClassClear(){
-      if(this.$refs.passwordInput.value === "") {
-        this.$refs.passwordLabel.classList.remove("active");
-        this.$refs.passwordSpan.classList.remove("active");
-      }
-      if(this.$refs.passwordInput2.value === "") {
-        this.$refs.passwordLabel2.classList.remove("active");
-        this.$refs.passwordSpan2.classList.remove("active");
-      }
-      if(this.$refs.emailInput.value === "") {
-         this.$refs.emailLabel.classList.remove("active");
-         this.$refs.emailSpan.classList.remove("active");
-      }
-    },
-    onFocus(){
-      if(document.activeElement.id === "password"){
-        this.activeClassClear();
-        this.$refs.passwordLabel.classList.add("active");
-        this.$refs.passwordSpan.classList.add("active");
-      }else if(document.activeElement.id === "password2"){
-        this.activeClassClear();
-        this.$refs.passwordLabel2.classList.add("active");
-        this.$refs.passwordSpan2.classList.add("active");
-      }else if(document.activeElement.id === "email"){
-        this.activeClassClear();
-        this.$refs.emailLabel.classList.add("active");
-        this.$refs.emailSpan.classList.add("active");
+    async register(e) {
+      e.preventDefault();
+      try {
+        const data = await axios.post(
+          'http://localhost:5001/ems-employee-managment-system/us-central1/app/api/users',
+          {
+            email: this.email,
+            password: this.password,
+            department: 'Sprzątanie',
+            position: 'Woźny'
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        console.log(data);
+        alert('Your account has been created.');
+      } catch (error) {
+        const errors = error.response.data.errors;
+        console.log(errors);
+
+        if (errors) {
+          errors.forEach(error => alert(error.msg));
+        }
       }
     }
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>

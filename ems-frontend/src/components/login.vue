@@ -9,76 +9,59 @@
     </div>
     <form>
       <div class="input-container">
-          <label for="email" ref="emailLabel">E-mail</label>
-          <input @focus="onFocus()" 
-                @blur="activeClassClear()" 
-                id="email" 
-                type="text"
-                ref="emailInput">
-          <div class="bottom-line-wrapper">
-            <span ref="emailSpan"></span>
-          </div>
+        <label for="email" ref="emailLabel">E-mail</label>
+        <input
+          @focus="onFocus()"
+          @blur="activeClassClear()"
+          id="email"
+          type="text"
+          ref="emailInput"
+        />
+        <div class="bottom-line-wrapper">
+          <span ref="emailSpan"></span>
+        </div>
       </div>
       <div class="input-container">
-          <label for="password" ref="passwordLabel">Password</label>
-          <input @focus="onFocus()" 
-                @blur="activeClassClear()" 
-                id="password" 
-                type="password"
-                ref="passwordInput">
-                
-          <div class="bottom-line-wrapper">
-            <span ref="passwordSpan"></span>
-          </div>
+        <label for="password" ref="passwordLabel">Password</label>
+        <input
+          @focus="onFocus()"
+          @blur="activeClassClear()"
+          id="password"
+          type="password"
+          ref="passwordInput"
+        />
+
+        <div class="bottom-line-wrapper">
+          <span ref="passwordSpan"></span>
+        </div>
       </div>
       <div class="keepMeLogIn__container">
-        <input type="checkbox" name="keepLogIn" id="keepMeLogIn">
-        <label for="keepMeLogIn" class="keepMeLogIn__text">Angemeldet bleiben</label>
+        <input type="checkbox" name="keepLogIn" id="keepMeLogIn" />
+        <label for="keepMeLogIn" class="keepMeLogIn__text"
+          >Angemeldet bleiben</label
+        >
       </div>
       <button id="form-submit-btn">Login</button>
     </form>
-    <p class="create-account">Or create an account if you don’t have it yet.
-You can do it <router-link to="/register">here</router-link>.</p>
+    <p class="create-account">
+      Or create an account if you don’t have it yet. You can do it
+      <router-link to="/register">here</router-link>.
+    </p>
   </div>
 </template>
 
 <script>
-// import { mixin } from '../utils/loginRegisterScripts.js'
+import { mixin } from '../utils/loginRegisterScripts.js';
+
 export default {
-  name: "Login",
-  data (){
-    return {
-      // focused: false
-    }
+  name: 'Login',
+  data() {
+    return {};
   },
-  // mixins: [mixin],
-  methods: {
-    activeClassClear(){
-      if(this.$refs.passwordInput.value === "") {
-        this.$refs.passwordLabel.classList.remove("active");
-        this.$refs.passwordSpan.classList.remove("active");
-      }
-      if(this.$refs.emailInput.value === "") {
-         this.$refs.emailLabel.classList.remove("active");
-         this.$refs.emailSpan.classList.remove("active");
-      }
-    },
-    onFocus(){
-      if(document.activeElement.id === "password"){
-        this.activeClassClear();
-        this.$refs.passwordLabel.classList.add("active");
-        this.$refs.passwordSpan.classList.add("active");
-      }else if(document.activeElement.id === "email"){
-        this.activeClassClear();
-        this.$refs.emailLabel.classList.add("active");
-        this.$refs.emailSpan.classList.add("active");
-      }
-    }
-  }
+  mixins: [mixin]
 };
 </script>
       }
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
-  
 </style>
