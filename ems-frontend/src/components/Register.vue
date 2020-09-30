@@ -83,7 +83,7 @@ export default {
       e.preventDefault();
       try {
         const data = await axios.post(
-          'http://localhost:5001/ems-employee-managment-system/us-central1/app/api/users',
+          '/api/users',
           {
             email: this.email,
             password: this.password,
