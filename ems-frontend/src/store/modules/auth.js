@@ -4,7 +4,7 @@ const state = {
   token: null,
   isAuthenticated: null,
   loading: true,
-  user: "Kuligson"
+  user: 'Kuligson'
 };
 
 const getters = {
