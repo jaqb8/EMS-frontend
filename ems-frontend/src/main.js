@@ -4,6 +4,8 @@ import router from './router';
 import store from './store';
 import './assets/css/reset.css';
 import './assets/css/loginRegisterStyles.css';
+// import firebase from 'firebase';
+import './utils/firebaseInit';
 
 Vue.config.productionTip = false;
 

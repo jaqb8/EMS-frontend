@@ -7,7 +7,7 @@
         <p>Login</p>
       </div>
     </div>
-    <form>
+    <form @submit="onSubmit">
       <div class="input-container">
         <label for="email" ref="emailLabel">E-mail</label>
         <input
@@ -16,6 +16,7 @@
           id="email"
           type="text"
           ref="emailInput"
+          v-model="email"
         />
         <div class="bottom-line-wrapper">
           <span ref="emailSpan"></span>
@@ -29,6 +30,7 @@
           id="password"
           type="password"
           ref="passwordInput"
+          v-model="password"
         />
 
         <div class="bottom-line-wrapper">
@@ -52,12 +54,23 @@
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Login',
   data() {
-    return {};
+    return {
+      email: '',
+      password: ''
+    };
   },
-  mixins: [mixin]
+  mixins: [mixin],
+  methods: {
+    ...mapActions(['login']),
+    onSubmit(e) {
+      e.preventDefault();
+      this.login({ email: this.email, password: this.password });
+    }
+  }
 };
 </script>
