@@ -1,5 +1,5 @@
 export default {
-  apiKey: 'AIzaSyCNrx7WLglhV3IPaiPFxOyHtpsLzw_HMcc',
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
   authDomain: 'ems-employee-managment-system.firebaseapp.com',
   databaseURL: 'https://ems-employee-managment-system.firebaseio.com',
   projectId: 'ems-employee-managment-system',
