@@ -7,7 +7,7 @@
         <p>Login</p>
       </div>
     </div>
-    <form @submit="onSubmit">
+    <form @submit.prevent="onSubmit">
       <div class="input-container">
         <label for="email" ref="emailLabel">E-mail</label>
         <input
@@ -67,8 +67,7 @@ export default {
   mixins: [mixin],
   methods: {
     ...mapActions(['login']),
-    onSubmit(e) {
-      e.preventDefault();
+    onSubmit() {
       this.login({ email: this.email, password: this.password });
     }
   }

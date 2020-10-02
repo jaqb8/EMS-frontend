@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 import router from '../../router/index';
 import firebase from 'firebase';
 
@@ -20,7 +20,6 @@ const getters = {
 
 const actions = {
   authAction({ commit }, user) {
-    console.log('authAction', user.email);
     if (user) {
       commit('SET_USER', {
         displayName: user.displayName,
@@ -28,6 +27,35 @@ const actions = {
       });
     } else {
       commit('SET_USER', null);
+    }
+  },
+  async register({ commit, dispatch }, payload) {
+    commit('SET_LOADING', true);
+    const newUser = {
+      email: payload.email,
+      password: payload.password,
+      department: 'Sprzątanie',
+      position: 'Woźny'
+    };
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const response = await axios.post('/api/users', newUser, config);
+      dispatch('login', {
+        email: response.data.email,
+        password: payload.password
+      });
+      commit('SET_LOADING', false);
+      alert('Your account has been created.');
+      router.push('/');
+    } catch (error) {
+      commit('SET_LOADING', false);
+      console.log(error);
     }
   },
   async login({ commit }, payload) {
@@ -38,8 +66,8 @@ const actions = {
         .auth()
         .signInWithEmailAndPassword(email, password);
       commit('SET_USER', {
-        displayName: user.displayName,
-        email: user.email
+        displayName: user.user.displayName,
+        email: user.user.email
       });
       commit('SET_LOADING', false);
       alert(`You are logged in as ${user.user.email}.`);
