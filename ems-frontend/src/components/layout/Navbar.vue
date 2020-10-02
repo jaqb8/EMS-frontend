@@ -4,15 +4,15 @@
       <h1>EMS</h1>
     </div>
     <div class="nav__right-container">
-      <div class="nav__icon-container" v-if="getUser">
+      <div class="nav__icon-container" v-if="isAuthenticated">
         <i class="nav__icon material-icons">account_circle</i>
         <span class="nav__username">{{ getUser }}</span>
       </div>
       <div class="nav__button-container">
-        <router-link v-if="!getUser" to="/login">
+        <router-link v-if="!isAuthenticated" to="/login">
           <button outlined class="">Login</button>
         </router-link>
-        <router-link v-if="!getUser" to="/register">
+        <router-link v-if="!isAuthenticated" to="/register">
           <button outlined class="">Register</button>
         </router-link>
         <button v-else outlined class="" @click="onLogout">Logout</button>
@@ -26,11 +26,16 @@ import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'Navbar',
-  computed: mapGetters(['getUser']),
+  data() {
+    return {
+      currentUser: false
+    };
+  },
+  computed: mapGetters(['isAuthenticated', 'getUser']),
   methods: {
-    ...mapActions(['logoutUser']),
+    ...mapActions(['logout']),
     onLogout() {
-      this.logoutUser();
+      this.logout();
     }
   }
 };

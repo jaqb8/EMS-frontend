@@ -7,7 +7,7 @@
         <p>Register</p>
       </div>
     </div>
-    <form>
+    <form @submit.prevent="onSubmit">
       <div class="input-container">
         <label for="email" ref="emailLabel">E-mail</label>
         <input
@@ -59,14 +59,14 @@
           Tomasz und Kulig zu</label
         >
       </div>
-      <button @click="register" id="form-submit-btn">Register</button>
+      <button id="form-submit-btn">Register</button>
     </form>
   </div>
 </template>
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
-import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Register',
@@ -79,33 +79,10 @@ export default {
   },
   mixins: [mixin],
   methods: {
-    async register(e) {
-      e.preventDefault();
-      try {
-        const data = await axios.post(
-          '/api/users',
-          {
-            email: this.email,
-            password: this.password,
-            department: 'Sprzątanie',
-            position: 'Woźny'
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        console.log(data);
-        alert('Your account has been created.');
-      } catch (error) {
-        const errors = error.response.data.errors;
-        console.log(errors);
-
-        if (errors) {
-          errors.forEach(error => alert(error.msg));
-        }
-      }
+    ...mapActions(['register']),
+    onSubmit() {
+      if (this.password !== this.password2) alert('Passwords do not match.');
+      else this.register({ email: this.email, password: this.password });
     }
   }
 };
