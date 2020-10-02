@@ -1,22 +1,22 @@
 <template>
-  <div class="register">
-    <Register />
+  <div class="login">
+    <Login />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Register from '@/components/Register.vue';
+import Login from '@/components/Login.vue';
 
 export default {
-  name: 'register',
+  name: 'LoginView',
   components: {
-    Register
+    Login
   }
 };
 </script>
 <style scoped>
-.register {
+.login {
   width: 35%;
   margin: 0 auto;
 }

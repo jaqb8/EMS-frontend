@@ -1,40 +1,25 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
 import firebase from 'firebase';
 
-Vue.use(VueRouter);
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home,
-    meta: {
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: function() {
-      return import('../views/Login.vue');
-    },
-    meta: {
-      requiresGuest: true
-    }
-  },
+const routerOptions = [
+  { path: '/', component: 'HomeView', meta: { requiresAuth: true } },
+  { path: '/login', component: 'LoginView', meta: { requiresGuest: true } },
   {
     path: '/register',
-    name: 'Register',
-    component: function() {
-      return import('../views/Register.vue');
-    },
-    meta: {
-      requiresGuest: true
-    }
+    component: 'RegisterView',
+    meta: { requiresGuest: true }
   }
 ];
+
+const routes = routerOptions.map(route => {
+  return {
+    ...route,
+    component: () => import(`@/views/${route.component}.vue`)
+  };
+});
+
+Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
@@ -43,8 +28,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const isAuthenticated = firebase.auth().currentUser;
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!firebase.auth().currentUser) {
+    if (!isAuthenticated) {
       next({
         path: '/login',
         query: {
@@ -55,7 +42,7 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
-    if (firebase.auth().currentUser) {
+    if (isAuthenticated) {
       next({
         path: '/',
         query: {

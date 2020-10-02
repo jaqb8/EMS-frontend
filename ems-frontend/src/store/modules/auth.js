@@ -4,55 +4,64 @@ import firebase from 'firebase';
 
 const state = {
   token: null,
-  isAuthenticated: null,
   loading: false,
   user: null
 };
 
 const getters = {
-  getUser: state => {
-    state.user ? state.user.displayName : '';
+  isAuthenticated(state) {
+    return state.user !== null && state.user !== undefined;
   },
-  isAuthenticated: state => state.isAuthenticated
+  getUser(state) {
+    const isAuthenticated = state.user !== null && state.user !== undefined;
+    return isAuthenticated ? state.user.displayName : false;
+  }
 };
 
 const actions = {
+  authAction({ commit }, user) {
+    console.log('authAction', user.email);
+    if (user) {
+      commit('SET_USER', {
+        displayName: user.displayName,
+        email: user.email
+      });
+    } else {
+      commit('SET_USER', null);
+    }
+  },
   async login({ commit }, payload) {
     try {
       const { email, password } = payload;
-
+      commit('SET_LOADING', true);
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      commit('loginUser', user);
-      alert(`You are logged in as ${user.user.displayName}.`);
-      router.go({ path: router.path });
+      commit('SET_USER', {
+        displayName: user.displayName,
+        email: user.email
+      });
+      commit('SET_LOADING', false);
+      alert(`You are logged in as ${user.user.email}.`);
+      router.push('/');
     } catch (error) {
+      commit('SET_LOADING', false);
       alert(error.message);
     }
   },
   async logout({ commit }) {
     await firebase.auth().signOut();
-    commit('logoutUser');
+    commit('SET_USER', null);
     router.push('/login');
-  },
-  autoSignIn({ commit }, payload) {
-    console.log(payload);
-    commit('loginUser', payload);
   }
 };
 
 const mutations = {
-  loginUser: (state, user) => {
-    state.isAuthenticated = true;
-    state.loading = false;
-    state.user = user.user;
+  SET_USER(state, payload) {
+    state.user = payload;
   },
-  logoutUser: state => {
-    state.token = null;
-    state.isAuthenticated = null;
-    state.loading = false;
-    state.user = null;
+  SET_LOADING(state, payload) {
+    state.loading = payload;
   }
 };
 

@@ -9,16 +9,17 @@ import './utils/firebaseInit';
 
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-
-  render: h => h(App),
-  created() {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        store.dispatch('autoSignIn', user);
+const unsubscribe = firebase.auth().onAuthStateChanged(firebaseUser => {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(App),
+    created() {
+      if (firebaseUser) {
+        store.dispatch('authAction', firebaseUser);
       }
-    });
-  }
-}).$mount('#app');
+    }
+  });
+  unsubscribe();
+});

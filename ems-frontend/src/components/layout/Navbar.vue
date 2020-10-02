@@ -6,7 +6,7 @@
     <div class="nav__right-container">
       <div class="nav__icon-container" v-if="isAuthenticated">
         <i class="nav__icon material-icons">account_circle</i>
-        <span class="nav__username">{{ currentUser }}</span>
+        <span class="nav__username">{{ getUser }}</span>
       </div>
       <div class="nav__button-container">
         <router-link v-if="!isAuthenticated" to="/login">
@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import firebase from 'firebase';
 import { mapActions, mapGetters } from 'vuex';
 
 export default {
@@ -32,11 +31,7 @@ export default {
       currentUser: false
     };
   },
-  created() {
-    if (firebase.auth().currentUser)
-      this.currentUser = firebase.auth().currentUser.displayName;
-  },
-  computed: mapGetters(['isAuthenticated']),
+  computed: mapGetters(['isAuthenticated', 'getUser']),
   methods: {
     ...mapActions(['logout']),
     onLogout() {
