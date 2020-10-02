@@ -1,9 +1,9 @@
 name: Deploy EMS frontend to Firebase Hosting
-runs-on: ubuntu-latest
 
-on: [push]
-    branches:
-        - master
+on:
+    push:
+        branches: 
+            - master
 
 jobs:
     firebase-deploy:
