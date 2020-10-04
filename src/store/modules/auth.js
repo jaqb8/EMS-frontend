@@ -52,7 +52,6 @@ const actions = {
       });
       commit('SET_LOADING', false);
       alert('Your account has been created.');
-      router.push('/');
     } catch (error) {
       commit('SET_LOADING', false);
       console.log(error);
