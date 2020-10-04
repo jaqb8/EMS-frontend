@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../services/api';
 import router from '../../router/index';
 import firebase from 'firebase';
 
@@ -38,14 +38,8 @@ const actions = {
       position: 'Woźny'
     };
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
     try {
-      const response = await axios.post('/api/users', newUser, config);
+      const response = await api.post('/api/users', newUser);
       dispatch('login', {
         email: response.data.email,
         password: payload.password
