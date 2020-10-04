@@ -39,9 +39,9 @@ const actions = {
     };
 
     try {
-      const response = await api.post('/api/users', newUser);
+      await api.post('/api/users', newUser);
       dispatch('login', {
-        email: response.data.email,
+        email: payload.email,
         password: payload.password
       });
       commit('SET_LOADING', false);
