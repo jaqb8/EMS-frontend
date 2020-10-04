@@ -6,9 +6,7 @@ import './assets/css/reset.css';
 import './assets/css/loginRegisterStyles.css';
 import firebase from 'firebase';
 import './utils/firebaseInit';
-import api from './services/api';
 
-Vue.prototype.$http = api;
 Vue.config.productionTip = false;
 
 const unsubscribe = firebase.auth().onAuthStateChanged(firebaseUser => {
