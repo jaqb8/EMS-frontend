@@ -33,9 +33,7 @@ const actions = {
     commit('SET_LOADING', true);
     const newUser = {
       email: payload.email,
-      password: payload.password,
-      department: 'Sprzątanie',
-      position: 'Woźny'
+      password: payload.password
     };
 
     try {
