@@ -17,6 +17,7 @@ const unsubscribe = firebase.auth().onAuthStateChanged(firebaseUser => {
     render: h => h(App),
     created() {
       if (firebaseUser) {
+        console.log(firebaseUser);
         store.dispatch('authAction', firebaseUser);
       }
     }

@@ -9,6 +9,13 @@ const routerOptions = [
     path: '/register',
     component: 'RegisterView',
     meta: { requiresGuest: true }
+  },
+  {
+    path: '/finishSignUp',
+    component: 'FinishSignUpView',
+    meta: {
+      requiresAuth: true
+    }
   }
 ];
 

@@ -15,6 +15,10 @@ const getters = {
   getUser(state) {
     const isAuthenticated = state.user !== null && state.user !== undefined;
     return isAuthenticated ? state.user.displayName : false;
+  },
+  getEmail(state) {
+    const isAuthenticated = state.user !== null && state.user !== undefined;
+    return isAuthenticated ? state.user.email : false;
   }
 };
 
