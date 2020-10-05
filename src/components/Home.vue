@@ -2,7 +2,7 @@
   <div>
     <div v-if="!emailVerified" class="email-banner">
       Please check your email and verify your account.
-      <button class="btn" @click="sendVerificationEmail">
+      <button class="btn" @click="verifyEmail">
         Send verification email
       </button>
       <button class="btn" @click="refresh">Refresh</button>
@@ -14,30 +14,21 @@
 </template>
 
 <script>
-import firebase from 'firebase';
 import store from '@/store';
-import actionCodeSettings from '../utils/emailConfig';
 
 export default {
   name: 'Home',
   data() {
     return {
-      emailVerified: firebase.auth().currentUser.emailVerified
+      emailVerified: store.getters.isEmailVerified
     };
   },
   methods: {
     refresh() {
       window.location.reload();
     },
-    async sendVerificationEmail() {
-      try {
-        const user = firebase.auth().currentUser;
-        await user.sendEmailVerification(actionCodeSettings);
-        alert('Verification email was successfully sent.');
-      } catch (error) {
-        console.log(error);
-        alert(error.message);
-      }
+    verifyEmail() {
+      store.dispatch('sendVerificationEmail');
     }
   }
 };

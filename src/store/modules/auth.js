@@ -1,6 +1,7 @@
 import api from '../../services/api';
 import router from '../../router/index';
 import firebase from 'firebase';
+import actionCodeSettings from '../../services/email';
 
 const state = {
   token: null,
@@ -14,11 +15,15 @@ const getters = {
   },
   getUser(state) {
     const isAuthenticated = state.user !== null && state.user !== undefined;
-    return isAuthenticated ? state.user.displayName : false;
+    return isAuthenticated ? state.user.displayName : null;
   },
   getEmail(state) {
     const isAuthenticated = state.user !== null && state.user !== undefined;
-    return isAuthenticated ? state.user.email : false;
+    return isAuthenticated ? state.user.email : null;
+  },
+  isEmailVerified(state) {
+    const isAuthenticated = state.user !== null && state.user !== undefined;
+    return isAuthenticated ? state.user.emailVerified : null;
   }
 };
 
@@ -27,7 +32,8 @@ const actions = {
     if (user) {
       commit('SET_USER', {
         displayName: user.displayName,
-        email: user.email
+        email: user.email,
+        emailVerified: user.emailVerified
       });
     } else {
       commit('SET_USER', null);
@@ -50,7 +56,7 @@ const actions = {
       alert('Your account has been created.');
     } catch (error) {
       commit('SET_LOADING', false);
-      console.log(error);
+      console.log(error.message);
     }
   },
   async login({ commit }, payload) {
@@ -62,7 +68,8 @@ const actions = {
         .signInWithEmailAndPassword(email, password);
       commit('SET_USER', {
         displayName: user.user.displayName,
-        email: user.user.email
+        email: user.user.email,
+        emailVerified: user.user.emailVerified
       });
       commit('SET_LOADING', false);
       alert(`You are logged in as ${user.user.email}.`);
@@ -76,6 +83,19 @@ const actions = {
     await firebase.auth().signOut();
     commit('SET_USER', null);
     router.push('/login');
+  },
+  async sendVerificationEmail({ commit }) {
+    try {
+      commit('SET_LOADING', true);
+      await firebase
+        .auth()
+        .currentUser.sendEmailVerification(actionCodeSettings);
+      commit('SET_LOADING', false);
+      alert('Verification email was successfully sent.');
+    } catch (error) {
+      console.log(error.message);
+      alert(error.message);
+    }
   }
 };
 

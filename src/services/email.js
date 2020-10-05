@@ -1,5 +1,5 @@
 const actionCodeSettings = {
-  url: 'http://localhost:8080/finishSignUp',
+  url: process.env.VUE_APP_EMAIL_VERIFICATION_URL,
   handleCodeInApp: true
 };
 
