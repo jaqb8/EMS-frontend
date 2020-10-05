@@ -1,4 +1,4 @@
-import axios from 'axios';
+import api from '../../services/api';
 import router from '../../router/index';
 import firebase from 'firebase';
 
@@ -36,21 +36,14 @@ const actions = {
       password: payload.password
     };
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
-
     try {
-      const response = await axios.post('/api/users', newUser, config);
+      await api.post('/api/users', newUser);
       dispatch('login', {
-        email: response.data.email,
+        email: payload.email,
         password: payload.password
       });
       commit('SET_LOADING', false);
       alert('Your account has been created.');
-      router.push('/');
     } catch (error) {
       commit('SET_LOADING', false);
       console.log(error);
