@@ -10,12 +10,15 @@
       </div>
       <div class="nav__button-container">
         <router-link v-if="!isAuthenticated" to="/login">
-          <button outlined class="">Login</button>
+          <button outlined class="nav__button">Login</button>
         </router-link>
         <router-link v-if="!isAuthenticated" to="/register">
-          <button outlined class="">Register</button>
+          <button outlined class="nav__button">Register</button>
         </router-link>
-        <button v-else outlined class="" @click="onLogout">Logout</button>
+        <button v-else outlined class="nav__button" @click="onLogout">
+          Logout
+        </button>
+        <Hamburger />
       </div>
     </div>
   </nav>
@@ -23,6 +26,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Hamburger from './HamburgerMenu.vue';
 
 export default {
   name: 'Navbar',
@@ -37,6 +41,9 @@ export default {
     onLogout() {
       this.logout();
     }
+  },
+  components: {
+    Hamburger
   }
 };
 </script>
@@ -73,7 +80,7 @@ export default {
 .nav__icon {
   margin-right: 5px;
 }
-.nav__button-container button {
+.nav__button {
   width: 140px;
   height: 48px;
   background: white;

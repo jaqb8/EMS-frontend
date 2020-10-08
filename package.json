@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "backend": "npm run --prefix ~/Projects/EMS-backend serve",
+    "backend": "npm run --prefix C:\\Users\\Lenovo\\Desktop\\michal\\EMS-backend serve",
     "dev": "concurrently \"npm run backend\" \"npm run serve\""
   },
   "dependencies": {
@@ -53,17 +53,15 @@
     "rules": {
       "no-unused-vars": "off"
     },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
+    "overrides": [{
+      "files": [
+        "**/__tests__/*.{j,t}s?(x)",
+        "**/tests/unit/**/*.spec.{j,t}s?(x)"
+      ],
+      "env": {
+        "jest": true
       }
-    ]
+    }]
   },
   "browserslist": [
     "> 1%",
