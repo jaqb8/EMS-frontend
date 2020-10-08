@@ -74,15 +74,21 @@ export default {
     return {
       email: '',
       password: '',
-      password2: ''
+      password2: '',
+      error: false
     };
   },
   mixins: [mixin],
   methods: {
     ...mapActions('auth', ['register']),
+    ...mapActions('alert', ['setAlert']),
     onSubmit() {
-      if (this.password !== this.password2) alert('Passwords do not match.');
-      else this.register({ email: this.email, password: this.password });
+      if (this.password !== this.password2) {
+        this.setAlert({
+          msg: 'Password do not match',
+          alertType: 'danger'
+        });
+      } else this.register({ email: this.email, password: this.password });
     }
   }
 };
