@@ -66,7 +66,7 @@ export default {
   },
   mixins: [mixin],
   methods: {
-    ...mapActions(['login']),
+    ...mapActions('auth', ['login']),
     onSubmit() {
       this.login({ email: this.email, password: this.password });
     }

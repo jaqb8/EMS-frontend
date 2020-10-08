@@ -79,7 +79,7 @@ export default {
   },
   mixins: [mixin],
   methods: {
-    ...mapActions(['register']),
+    ...mapActions('auth', ['register']),
     onSubmit() {
       if (this.password !== this.password2) alert('Passwords do not match.');
       else this.register({ email: this.email, password: this.password });
