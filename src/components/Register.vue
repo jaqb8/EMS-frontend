@@ -59,7 +59,9 @@
           Tomasz und Kulig zu</label
         >
       </div>
-      <button id="form-submit-btn">Register</button>
+      <button :disabled="checkFormFields" id="form-submit-btn">
+        Register
+      </button>
     </form>
   </div>
 </template>
@@ -67,6 +69,7 @@
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
 import { mapActions } from 'vuex';
+import validateEmail from '@/utils/emailValidation.js';
 
 export default {
   name: 'Register',
@@ -74,8 +77,7 @@ export default {
     return {
       email: '',
       password: '',
-      password2: '',
-      error: false
+      password2: ''
     };
   },
   mixins: [mixin],
@@ -85,10 +87,23 @@ export default {
     onSubmit() {
       if (this.password !== this.password2) {
         this.setAlert({
-          msg: 'Password do not match',
+          msg: 'Password do not match.',
+          alertType: 'info',
+          timeout: 5000
+        });
+      } else if (!validateEmail(this.email)) {
+        this.setAlert({
+          msg: 'Please include valid email.',
           alertType: 'danger'
         });
-      } else this.register({ email: this.email, password: this.password });
+      } else {
+        this.register({ email: this.email, password: this.password });
+      }
+    }
+  },
+  computed: {
+    checkFormFields() {
+      return this.email === '' || this.password === '' || this.password2 === '';
     }
   }
 };
