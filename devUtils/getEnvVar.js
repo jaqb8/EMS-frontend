@@ -1,5 +1,4 @@
 const fs = require('fs');
-const exec = require('child_process').exec;
 
 fs.readFile('.env.local', 'utf-8', (err, data) => {
   const text = data.split(/[=\n]/);
