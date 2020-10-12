@@ -1,4 +1,6 @@
 <template>
+<div>
+    <Alert />
   <div class="form-container">
     <div class="form-top-bar">
       <div class="bar-top-line"></div>
@@ -50,11 +52,13 @@
       <router-link to="/register">here</router-link>.
     </p>
   </div>
+  </div>
 </template>
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
 import { mapActions } from 'vuex';
+import Alert from '@/components/layout/Alert';
 
 export default {
   name: 'Login',
@@ -75,6 +79,9 @@ export default {
     checkFormFields() {
       return this.email === '' || this.password === '';
     }
+  },
+  components: {
+    Alert
   }
 };
 </script>

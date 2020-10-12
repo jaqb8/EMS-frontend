@@ -6,7 +6,9 @@
       v-bind:class="'alert alert-' + alert.alertType"
     >
       {{ alert.msg }}
-      <button @click="removeAlert({ id: alert.id })" class="btn">[X]</button>
+      <button @click="removeAlert({ id: alert.id })" class="btn">
+        <i class="nav__icon material-icons">close</i>
+      </button>
     </div>
   </div>
 </template>
@@ -29,13 +31,23 @@ export default {
 <style scoped>
 .btn {
   cursor: pointer;
-}
 
+}
+.alert{
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgba(158,28,35,.2);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
 .alert-danger {
-  background-color: red;
+  background-color: #ffe3e6;
 }
 
 .alert-info {
-  background-color: skyblue;
+  background-color: #C9DBE8;
+  border-color: #0a3656;
 }
+
 </style>

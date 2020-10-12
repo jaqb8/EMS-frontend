@@ -1,4 +1,6 @@
 <template>
+<div>
+    <Alert />
   <div class="form-container">
     <div class="form-top-bar">
       <div class="bar-top-line"></div>
@@ -64,12 +66,14 @@
       </button>
     </form>
   </div>
+  </div>
 </template>
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
 import { mapActions } from 'vuex';
 import validateEmail from '@/utils/emailValidation.js';
+import Alert from '@/components/layout/Alert';
 
 export default {
   name: 'Register',
@@ -83,13 +87,12 @@ export default {
   mixins: [mixin],
   methods: {
     ...mapActions('auth', ['register']),
-    ...mapActions('alert', ['setAlert']),
+    ...mapActions('alert', ['setAlert', 'clearAlerts']),
     onSubmit() {
       if (this.password !== this.password2) {
         this.setAlert({
           msg: 'Password do not match.',
-          alertType: 'info',
-          timeout: 5000
+          alertType: 'danger'
         });
       } else if (!validateEmail(this.email)) {
         this.setAlert({
@@ -97,6 +100,7 @@ export default {
           alertType: 'danger'
         });
       } else {
+        this.clearAlerts();
         this.register({ email: this.email, password: this.password });
       }
     }
@@ -105,6 +109,9 @@ export default {
     checkFormFields() {
       return this.email === '' || this.password === '' || this.password2 === '';
     }
+  },
+  components: {
+    Alert
   }
 };
 </script>
