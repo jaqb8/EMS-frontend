@@ -1,5 +1,5 @@
 <template>
-  <div class="hamburger">
+  <div class="hamburger" ref="hamburger" v-bind:class="{ active: isActive }">
     <span class="top"></span>
     <span class="mid"></span>
     <span class="bottom"></span>
@@ -8,41 +8,66 @@
 
 <script>
 export default {
-  name: 'Hamburger'
+  name: 'Hamburger',
+  // data() {
+  //   return {
+  //     isActive: false
+  //   };
+  // },
+  props: ['isActive'],
+  methods: {
+    toggleActiveClass() {
+      this.isActive = !this.isActive;
+      console.log(this.$refs.hamburger);
+    }
+  }
 };
 </script>
 
 <style scoped>
 .hamburger {
+  display: none;
+  position: relative;
   width: 40px;
   height: 40px;
   border: 0;
-  border-top: 5px solid #fff;
-  border-radius: 5px;
   background: transparent;
-  position: relative;
   transition: 0.3s transform linear;
 }
-.hamburger::before,
-.hamburger::after {
-  content: '';
+.hamburger span {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   border-top: 5px solid #fff;
   border-radius: 10px;
-  transform: translateY(10px);
-}
-.hamburger::after {
-  transform: translateY(25px);
+  top: 0;
+  left: 0;
   transition: 0.3s transform linear;
 }
-.hamburger:focus {
-  transform: rotate(45deg) translateY(5px);
-  border: none;
+.hamburger span:nth-child(1) {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
 }
-.hamburger:focus::after {
-  transform: rotate(-90deg) translateX(-10px);
+.hamburger span:nth-child(2) {
+  transform: translateY(10px);
+}
+.hamburger span:nth-child(3) {
+  transform: translateY(20px);
+}
+/* animations */
+.hamburger.active .top {
+  transform: rotate(45deg);
+}
+.hamburger.active .mid {
+  transform: rotate(45deg);
+}
+.hamburger.active .bottom {
+  transform: rotate(-45deg);
+}
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
 }
 </style>

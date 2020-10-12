@@ -18,8 +18,8 @@
         <button v-else outlined class="nav__button" @click="onLogout">
           Logout
         </button>
-        <Hamburger />
       </div>
+      <Hamburger v-bind:isActive="isActive" @click="toggleActiveClass()" />
     </div>
   </nav>
 </template>
@@ -32,7 +32,8 @@ export default {
   name: 'Navbar',
   data() {
     return {
-      currentUser: false
+      currentUser: false,
+      isActive: false
     };
   },
   computed: mapGetters(['isAuthenticated', 'getUser']),
@@ -40,6 +41,10 @@ export default {
     ...mapActions(['logout']),
     onLogout() {
       this.logout();
+    },
+    toggleActiveClass() {
+      this.isActive = !this.isActive;
+      console.log(this.$refs.hamburger);
     }
   },
   components: {
@@ -89,5 +94,21 @@ export default {
   border-radius: 5px;
   font-weight: 500;
   cursor: pointer;
+}
+@media (max-width: 768px) {
+  .nav {
+    position: relative;
+    overflow: hidden;
+  }
+  .nav__button-container {
+    position: absolute;
+    width: 30%;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+  }
+  .nav__button-container.active {
+    right: 0;
+  }
 }
 </style>
