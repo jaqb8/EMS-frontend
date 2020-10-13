@@ -29,7 +29,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Hamburger from './HamburgerMenu.vue';
+import Hamburger from './Hamburger.vue';
 
 export default {
   name: 'Navbar',
