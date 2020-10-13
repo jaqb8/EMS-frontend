@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "backend": "npm run --prefix ~/Projects/EMS-backend serve",
+    "backend": "./devUtils/run_backend.sh",
     "dev": "concurrently \"npm run backend\" \"npm run serve\""
   },
   "dependencies": {
