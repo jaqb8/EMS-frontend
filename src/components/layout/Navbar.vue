@@ -19,7 +19,10 @@
           Logout
         </button>
       </div>
-      <Hamburger v-bind:isActive="isActive" @click="toggleActiveClass()" />
+      <Hamburger
+        v-bind:isActive="isActive"
+        v-on:toggle-class-active="toggleClassActive"
+      />
     </div>
   </nav>
 </template>
@@ -42,9 +45,8 @@ export default {
     onLogout() {
       this.logout();
     },
-    toggleActiveClass() {
+    toggleClassActive() {
       this.isActive = !this.isActive;
-      console.log(this.$refs.hamburger);
     }
   },
   components: {

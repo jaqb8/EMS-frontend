@@ -1,5 +1,9 @@
 <template>
-  <div class="hamburger" ref="hamburger" v-bind:class="{ active: isActive }">
+  <div
+    class="hamburger"
+    v-bind:class="{ active: isActive }"
+    @click="$emit('toggle-class-active')"
+  >
     <span class="top"></span>
     <span class="mid"></span>
     <span class="bottom"></span>
@@ -9,17 +13,8 @@
 <script>
 export default {
   name: 'Hamburger',
-  // data() {
-  //   return {
-  //     isActive: false
-  //   };
-  // },
-  props: ['isActive'],
-  methods: {
-    toggleActiveClass() {
-      this.isActive = !this.isActive;
-      console.log(this.$refs.hamburger);
-    }
+  props: {
+    isActive: Boolean
   }
 };
 </script>
