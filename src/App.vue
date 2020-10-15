@@ -10,14 +10,14 @@ import Navbar from '@/components/layout/Navbar';
 
 export default {
   name: 'App',
-
   components: {
     Navbar
   },
-
-  data: () => ({
-    //
-  })
+  watch: {
+    $route(to, from) {
+      this.$store.dispatch('alert/clearAlerts');
+    }
+  }
 };
 </script>
 

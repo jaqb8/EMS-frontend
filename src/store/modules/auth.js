@@ -28,9 +28,7 @@ const getters = {
 };
 
 const actions = {
-  authAction({
-    commit
-  }, user) {
+  authAction({ commit }, user) {
     if (user) {
       commit('SET_USER', {
         displayName: user.displayName,
@@ -41,10 +39,7 @@ const actions = {
       commit('SET_USER', null);
     }
   },
-  register({
-    commit,
-    dispatch
-  }, payload) {
+  register({ commit, dispatch }, payload) {
     commit('SET_LOADING', true);
     const newUser = {
       email: payload.email,
@@ -66,10 +61,12 @@ const actions = {
         if (errors) {
           errors.forEach(error =>
             dispatch(
-              'alert/setAlert', {
+              'alert/setAlert',
+              {
                 msg: error.msg,
                 alertType: 'danger'
-              }, {
+              },
+              {
                 root: true
               }
             )
@@ -77,14 +74,8 @@ const actions = {
         }
       });
   },
-  login({
-    commit,
-    dispatch
-  }, payload) {
-    const {
-      email,
-      password
-    } = payload;
+  login({ commit, dispatch }, payload) {
+    const { email, password } = payload;
     commit('SET_LOADING', true);
     firebase
       .auth()
@@ -102,20 +93,19 @@ const actions = {
         commit('SET_LOADING', false);
         if (err.message) {
           dispatch(
-            'alert/setAlert', {
+            'alert/setAlert',
+            {
               msg: err.message,
               alertType: 'danger'
-            }, {
+            },
+            {
               root: true
             }
           );
         }
       });
   },
-  logout({
-    commit,
-    dispatch
-  }) {
+  logout({ commit, dispatch }) {
     firebase
       .auth()
       .signOut()
@@ -126,20 +116,19 @@ const actions = {
       .catch(err => {
         if (err.message) {
           dispatch(
-            'alert/setAlert', {
+            'alert/setAlert',
+            {
               msg: err.message,
               alertType: 'danger'
-            }, {
+            },
+            {
               root: true
             }
           );
         }
       });
   },
-  sendVerificationEmail({
-    commit,
-    dispatch
-  }) {
+  sendVerificationEmail({ commit, dispatch }) {
     commit('SET_LOADING', true);
     firebase
       .auth()
@@ -147,10 +136,12 @@ const actions = {
       .then(() => {
         commit('SET_LOADING', false);
         dispatch(
-          'alert/setAlert', {
+          'alert/setAlert',
+          {
             msg: 'Verification email was successfully sent.',
             alertType: 'info'
-          }, {
+          },
+          {
             root: true
           }
         );

@@ -31,12 +31,11 @@ export default {
 <style scoped>
 .btn {
   cursor: pointer;
-
 }
-.alert{
+.alert {
   display: flex;
   justify-content: space-between;
-  border: 1px solid rgba(158,28,35,.2);
+  border: 1px solid rgba(158, 28, 35, 0.2);
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
@@ -46,8 +45,7 @@ export default {
 }
 
 .alert-info {
-  background-color: #C9DBE8;
+  background-color: #c9dbe8;
   border-color: #0a3656;
 }
-
 </style>

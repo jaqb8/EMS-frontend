@@ -18,30 +18,28 @@ const actions = {
     if (payload.timeout) {
       setTimeout(
         () =>
-        commit('REMOVE_ALERT', {
-          id
-        }),
+          commit('REMOVE_ALERT', {
+            id
+          }),
         payload.timeout ? payload.timeout : 5000
       );
     }
   },
-  removeAlert({
-    commit
-  }, payload) {
+  removeAlert({ commit }, payload) {
     commit('REMOVE_ALERT', {
       id: payload.id
     });
   },
-  clearAlerts({
-    commit
-  }) {
-    commit('CLEAR_ALERTS')
+  clearAlerts({ commit }) {
+    if (state.alertsList.length > 0) commit('CLEAR_ALERTS');
   }
 };
 
 const mutations = {
   SET_ALERT(state, payload) {
-    state.alertsList = state.alertsList.some(alert => alert.msg === payload.msg) ? [...state.alertsList] : [...state.alertsList, payload];
+    state.alertsList = state.alertsList.some(alert => alert.msg === payload.msg)
+      ? [...state.alertsList]
+      : [...state.alertsList, payload];
   },
   REMOVE_ALERT(state, payload) {
     state.alertsList = state.alertsList.filter(
