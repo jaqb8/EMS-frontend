@@ -1,6 +1,7 @@
 import api from '../../services/api';
 import router from '../../router/index';
 import firebase from 'firebase';
+import actionCodeSettings from '../../services/email';
 
 const state = {
   token: null,
@@ -14,7 +15,15 @@ const getters = {
   },
   getUser(state) {
     const isAuthenticated = state.user !== null && state.user !== undefined;
-    return isAuthenticated ? state.user.displayName : false;
+    return isAuthenticated ? state.user.displayName : null;
+  },
+  getEmail(state) {
+    const isAuthenticated = state.user !== null && state.user !== undefined;
+    return isAuthenticated ? state.user.email : null;
+  },
+  isEmailVerified(state) {
+    const isAuthenticated = state.user !== null && state.user !== undefined;
+    return isAuthenticated ? state.user.emailVerified : null;
   }
 };
 
@@ -23,55 +32,132 @@ const actions = {
     if (user) {
       commit('SET_USER', {
         displayName: user.displayName,
-        email: user.email
+        email: user.email,
+        emailVerified: user.emailVerified
       });
     } else {
       commit('SET_USER', null);
     }
   },
-  async register({ commit, dispatch }, payload) {
+  register({ commit, dispatch }, payload) {
     commit('SET_LOADING', true);
     const newUser = {
       email: payload.email,
       password: payload.password
     };
 
-    try {
-      await api.post('/api/users', newUser);
-      dispatch('login', {
-        email: payload.email,
-        password: payload.password
+    api
+      .post('/api/users', newUser)
+      .then(() => {
+        dispatch('login', {
+          email: payload.email,
+          password: payload.password
+        });
+        commit('SET_LOADING', false);
+      })
+      .catch(err => {
+        commit('SET_LOADING', false);
+        const serverError = err.response.data.message;
+        const errors = err.response.data.errors;
+        if (errors) {
+          errors.forEach(error =>
+            dispatch(
+              'alert/setAlert',
+              {
+                msg: error.msg,
+                alertType: 'danger'
+              },
+              {
+                root: true
+              }
+            )
+          );
+        } else if (serverError) {
+          dispatch(
+            'alert/setAlert',
+            {
+              msg: serverError,
+              alertType: 'danger'
+            },
+            {
+              root: true
+            }
+          );
+        }
       });
-      commit('SET_LOADING', false);
-      alert('Your account has been created.');
-    } catch (error) {
-      commit('SET_LOADING', false);
-      console.log(error);
-    }
   },
-  async login({ commit }, payload) {
-    try {
-      const { email, password } = payload;
-      commit('SET_LOADING', true);
-      const user = await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-      commit('SET_USER', {
-        displayName: user.user.displayName,
-        email: user.user.email
+  login({ commit, dispatch }, payload) {
+    const { email, password } = payload;
+    commit('SET_LOADING', true);
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(user => {
+        commit('SET_USER', {
+          displayName: user.user.displayName,
+          email: user.user.email,
+          emailVerified: user.user.emailVerified
+        });
+        commit('SET_LOADING', false);
+        router.push('/');
+      })
+      .catch(err => {
+        commit('SET_LOADING', false);
+        if (err.message) {
+          dispatch(
+            'alert/setAlert',
+            {
+              msg: err.message,
+              alertType: 'danger'
+            },
+            {
+              root: true
+            }
+          );
+        }
       });
-      commit('SET_LOADING', false);
-      alert(`You are logged in as ${user.user.email}.`);
-      router.push('/');
-    } catch (error) {
-      commit('SET_LOADING', false);
-      alert(error.message);
-    }
   },
-  async logout({ commit }) {
-    await firebase.auth().signOut();
-    commit('SET_USER', null);
-    router.push('/login');
+  logout({ commit, dispatch }) {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        commit('SET_USER', null);
+        router.push('/login');
+      })
+      .catch(err => {
+        if (err.message) {
+          dispatch(
+            'alert/setAlert',
+            {
+              msg: err.message,
+              alertType: 'danger'
+            },
+            {
+              root: true
+            }
+          );
+        }
+      });
+  },
+  sendVerificationEmail({ commit, dispatch }) {
+    commit('SET_LOADING', true);
+    firebase
+      .auth()
+      .currentUser.sendEmailVerification(actionCodeSettings)
+      .then(() => {
+        commit('SET_LOADING', false);
+        dispatch(
+          'alert/setAlert',
+          {
+            msg: 'Verification email was successfully sent.',
+            alertType: 'info'
+          },
+          {
+            root: true
+          }
+        );
+      });
   }
 };
 

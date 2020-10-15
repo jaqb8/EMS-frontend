@@ -31,9 +31,9 @@ export default {
       currentUser: false
     };
   },
-  computed: mapGetters(['isAuthenticated', 'getUser']),
+  computed: { ...mapGetters('auth', ['isAuthenticated', 'getUser']) },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions('auth', ['logout']),
     onLogout() {
       this.logout();
     }
@@ -50,7 +50,7 @@ export default {
   height: 70px;
   background: #2b7af0;
   color: #fff;
-  margin-bottom: 5%;
+  margin-bottom: 2%;
 }
 .nav a {
   color: white;
