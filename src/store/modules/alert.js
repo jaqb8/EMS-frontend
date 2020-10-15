@@ -1,6 +1,4 @@
-import {
-  v4 as uuidv4
-} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 const state = {
   alertsList: []
@@ -13,9 +11,7 @@ const getters = {
 };
 
 const actions = {
-  setAlert({
-    commit
-  }, payload) {
+  setAlert({ commit }, payload) {
     const id = uuidv4();
     commit('SET_ALERT', {
       msg: payload.msg,
@@ -26,9 +22,9 @@ const actions = {
 
     setTimeout(
       () =>
-      commit('REMOVE_ALERT', {
-        id
-      }),
+        commit('REMOVE_ALERT', {
+          id
+        }),
       payload.timeout ? payload.timeout : 5000
     );
   }
