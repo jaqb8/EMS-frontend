@@ -57,6 +57,7 @@ const actions = {
       })
       .catch(err => {
         commit('SET_LOADING', false);
+        const serverError = err.response.data.message;
         const errors = err.response.data.errors;
         if (errors) {
           errors.forEach(error =>
@@ -70,6 +71,17 @@ const actions = {
                 root: true
               }
             )
+          );
+        } else if (serverError) {
+          dispatch(
+            'alert/setAlert',
+            {
+              msg: serverError,
+              alertType: 'danger'
+            },
+            {
+              root: true
+            }
           );
         }
       });
