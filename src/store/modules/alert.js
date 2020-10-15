@@ -4,11 +4,7 @@ const state = {
   alertsList: []
 };
 
-const getters = {
-  getAlertList(state) {
-    return state.alertList;
-  }
-};
+const getters = {};
 
 const actions = {
   setAlert({ commit }, payload) {
@@ -18,26 +14,42 @@ const actions = {
       alertType: payload.alertType,
       id: id
     });
-    console.log(this.state);
 
-    setTimeout(
-      () =>
+    if (payload.timeout) {
+      setTimeout(
+        () =>
         commit('REMOVE_ALERT', {
           id
         }),
-      payload.timeout ? payload.timeout : 5000
-    );
+        payload.timeout ? payload.timeout : 5000
+      );
+    }
+  },
+  removeAlert({
+    commit
+  }, payload) {
+    commit('REMOVE_ALERT', {
+      id: payload.id
+    });
+  },
+  clearAlerts({
+    commit
+  }) {
+    commit('CLEAR_ALERTS')
   }
 };
 
 const mutations = {
   SET_ALERT(state, payload) {
-    state.alertsList = [...state.alertsList, payload];
+    state.alertsList = state.alertsList.some(alert => alert.msg === payload.msg) ? [...state.alertsList] : [...state.alertsList, payload];
   },
   REMOVE_ALERT(state, payload) {
     state.alertsList = state.alertsList.filter(
       alert => alert.id !== payload.id
     );
+  },
+  CLEAR_ALERTS(state) {
+    state.alertsList = [];
   }
 };
 

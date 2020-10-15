@@ -1,4 +1,6 @@
 <template>
+<div>
+    <Alert />
   <div class="form-container">
     <div class="form-top-bar">
       <div class="bar-top-line"></div>
@@ -43,18 +45,20 @@
           >Angemeldet bleiben</label
         >
       </div>
-      <button id="form-submit-btn">Login</button>
+      <button :disabled="checkFormFields" id="form-submit-btn">Login</button>
     </form>
     <p class="create-account">
       Or create an account if you don’t have it yet. You can do it
       <router-link to="/register">here</router-link>.
     </p>
   </div>
+  </div>
 </template>
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
 import { mapActions } from 'vuex';
+import Alert from '@/components/layout/Alert';
 
 export default {
   name: 'Login',
@@ -70,6 +74,14 @@ export default {
     onSubmit() {
       this.login({ email: this.email, password: this.password });
     }
+  },
+  computed: {
+    checkFormFields() {
+      return this.email === '' || this.password === '';
+    }
+  },
+  components: {
+    Alert
   }
 };
 </script>

@@ -1,4 +1,6 @@
 <template>
+<div>
+    <Alert />
   <div class="form-container">
     <div class="form-top-bar">
       <div class="bar-top-line"></div>
@@ -59,14 +61,19 @@
           Tomasz und Kulig zu</label
         >
       </div>
-      <button id="form-submit-btn">Register</button>
+      <button :disabled="checkFormFields" id="form-submit-btn">
+        Register
+      </button>
     </form>
+  </div>
   </div>
 </template>
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
 import { mapActions } from 'vuex';
+import validateEmail from '@/utils/emailValidation.js';
+import Alert from '@/components/layout/Alert';
 
 export default {
   name: 'Register',
@@ -74,22 +81,37 @@ export default {
     return {
       email: '',
       password: '',
-      password2: '',
-      error: false
+      password2: ''
     };
   },
   mixins: [mixin],
   methods: {
     ...mapActions('auth', ['register']),
-    ...mapActions('alert', ['setAlert']),
+    ...mapActions('alert', ['setAlert', 'clearAlerts']),
     onSubmit() {
       if (this.password !== this.password2) {
         this.setAlert({
-          msg: 'Password do not match',
+          msg: 'Password do not match.',
           alertType: 'danger'
         });
-      } else this.register({ email: this.email, password: this.password });
+      } else if (!validateEmail(this.email)) {
+        this.setAlert({
+          msg: 'Please include valid email.',
+          alertType: 'danger'
+        });
+      } else {
+        this.clearAlerts();
+        this.register({ email: this.email, password: this.password });
+      }
     }
+  },
+  computed: {
+    checkFormFields() {
+      return this.email === '' || this.password === '' || this.password2 === '';
+    }
+  },
+  components: {
+    Alert
   }
 };
 </script>

@@ -3,29 +3,51 @@
     <div
       v-for="alert in alerts"
       :key="alert.id"
-      v-bind:alert="'alert alert-' + alert.alertType"
+      v-bind:class="'alert alert-' + alert.alertType"
     >
       {{ alert.msg }}
+      <button @click="removeAlert({ id: alert.id })" class="btn">
+        <i class="nav__icon material-icons">close</i>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapActions } from 'vuex';
+
 export default {
-  data() {
-    return {
-      alerts: []
-    };
-  },
   computed: {
-    ...mapGetters('alert', ['getAlertList'])
+    ...mapState({
+      alerts: state => state.alert.alertsList
+    })
   },
-  mounted() {
-    let alertList = this.getAlertList();
-    this.alerts = alertList;
+  methods: {
+    ...mapActions('alert', ['removeAlert'])
   }
 };
 </script>
 
-<style></style>
+<style scoped>
+.btn {
+  cursor: pointer;
+
+}
+.alert{
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid rgba(158,28,35,.2);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.alert-danger {
+  background-color: #ffe3e6;
+}
+
+.alert-info {
+  background-color: #C9DBE8;
+  border-color: #0a3656;
+}
+
+</style>
