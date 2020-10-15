@@ -3,6 +3,5 @@
   "semi": true,
   "trailingComma": "none",
   "arrowParens": "avoid",
-  "useTabs": false,
   "printWidth": 80
 }
