@@ -45,7 +45,10 @@
             >Angemeldet bleiben</label
           >
         </div>
-        <button :disabled="checkFormFields" id="form-submit-btn">Login</button>
+        <button :disabled="checkFormFields" id="form-submit-btn">
+          <div v-if="!loading">Login</div>
+          <div v-else><Spinner /></div>
+        </button>
       </form>
       <p class="create-account">
         Or create an account if you don’t have it yet. You can do it
@@ -57,8 +60,9 @@
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Alert from '@/components/layout/Alert';
+import Spinner from '@/components/layout/Spinner';
 
 export default {
   name: 'Login',
@@ -76,12 +80,16 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      loading: state => state.auth.loading
+    }),
     checkFormFields() {
-      return this.email === '' || this.password === '';
+      return this.email === '' || this.password === '' || this.loading;
     }
   },
   components: {
-    Alert
+    Alert,
+    Spinner
   }
 };
 </script>

@@ -62,7 +62,8 @@
           >
         </div>
         <button :disabled="checkFormFields" id="form-submit-btn">
-          Register
+          <div v-if="!loading">Register</div>
+          <div v-else><Spinner /></div>
         </button>
       </form>
     </div>
@@ -71,9 +72,10 @@
 
 <script>
 import { mixin } from '../utils/loginRegisterScripts.js';
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import validateEmail from '@/utils/emailValidation.js';
 import Alert from '@/components/layout/Alert';
+import Spinner from '@/components/layout/Spinner';
 
 export default {
   name: 'Register',
@@ -106,12 +108,21 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      loading: state => state.auth.loading
+    }),
     checkFormFields() {
-      return this.email === '' || this.password === '' || this.password2 === '';
+      return (
+        this.email === '' ||
+        this.password === '' ||
+        this.password2 === '' ||
+        this.loading
+      );
     }
   },
   components: {
-    Alert
+    Alert,
+    Spinner
   }
 };
 </script>
