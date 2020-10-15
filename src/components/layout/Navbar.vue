@@ -39,9 +39,9 @@ export default {
       isActive: false
     };
   },
-  computed: mapGetters(['isAuthenticated', 'getUser']),
+  computed: { ...mapGetters('auth', ['isAuthenticated', 'getUser']) },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions('auth', ['logout']),
     onLogout() {
       this.logout();
     },
