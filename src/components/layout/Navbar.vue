@@ -86,14 +86,15 @@ export default {
   margin-right: 5px;
 }
 .nav__button {
-  width: 140px;
-  height: 48px;
+  width: 120px;
+  height: 40px;
   background: white;
   color: #2163c7;
   border: none;
   border-radius: 5px;
   font-weight: 500;
   cursor: pointer;
+  font-size: 16px;
 }
 @media (max-width: 768px) {
   .nav {
