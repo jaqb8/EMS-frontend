@@ -132,6 +132,7 @@ form button {
   z-index: 1;
   animation: bottomInputBar 0.4s forwards;
 }
+
 @keyframes bottomInputBar {
   0% {
     transform: translateX(-250%);

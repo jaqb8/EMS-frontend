@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div v-if="!emailVerified" class="email-banner">
+    <div v-if="!isEmailVerified" class="email-banner">
       Please check your email and verify your account.
-      <button class="btn" @click="verifyEmail">
+      <button class="btn" @click="sendVerificationEmail">
         Send verification email
       </button>
       <button class="btn" @click="refresh">Refresh</button>
@@ -15,20 +15,17 @@
 
 <script>
 import store from '@/store';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
-  data() {
-    return {
-      emailVerified: store.getters.isEmailVerified
-    };
+  computed: {
+    ...mapGetters('auth', ['isEmailVerified'])
   },
   methods: {
+    ...mapActions('auth', ['sendVerificationEmail']),
     refresh() {
       window.location.reload();
-    },
-    verifyEmail() {
-      store.dispatch('sendVerificationEmail');
     }
   }
 };

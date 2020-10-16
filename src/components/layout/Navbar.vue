@@ -19,14 +19,17 @@
           Logout
         </button>
       </div>
-      <Hamburger v-bind:isActive="isActive" @click="toggleActiveClass()" />
+      <Hamburger
+        v-bind:isActive="isActive"
+        v-on:toggle-class-active="toggleClassActive"
+      />
     </div>
   </nav>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Hamburger from './HamburgerMenu.vue';
+import Hamburger from './Hamburger.vue';
 
 export default {
   name: 'Navbar',
@@ -36,15 +39,14 @@ export default {
       isActive: false
     };
   },
-  computed: mapGetters(['isAuthenticated', 'getUser']),
+  computed: { ...mapGetters('auth', ['isAuthenticated', 'getUser']) },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions('auth', ['logout']),
     onLogout() {
       this.logout();
     },
-    toggleActiveClass() {
+    toggleClassActive() {
       this.isActive = !this.isActive;
-      console.log(this.$refs.hamburger);
     }
   },
   components: {
