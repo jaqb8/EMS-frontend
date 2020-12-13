@@ -10,25 +10,33 @@
       </div>
       <div class="nav__button-container">
         <router-link v-if="!isAuthenticated" to="/login">
-          <button outlined class="">Login</button>
+          <button outlined class="nav__button">Login</button>
         </router-link>
         <router-link v-if="!isAuthenticated" to="/register">
-          <button outlined class="">Register</button>
+          <button outlined class="nav__button">Register</button>
         </router-link>
-        <button v-else outlined class="" @click="onLogout">Logout</button>
+        <button v-else outlined class="nav__button" @click="onLogout">
+          Logout
+        </button>
       </div>
+      <Hamburger
+        v-bind:isActive="isActive"
+        v-on:toggle-class-active="toggleClassActive"
+      />
     </div>
   </nav>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import Hamburger from './Hamburger.vue';
 
 export default {
   name: 'Navbar',
   data() {
     return {
-      currentUser: false
+      currentUser: false,
+      isActive: false
     };
   },
   computed: { ...mapGetters('auth', ['isAuthenticated', 'getUser']) },
@@ -36,7 +44,13 @@ export default {
     ...mapActions('auth', ['logout']),
     onLogout() {
       this.logout();
+    },
+    toggleClassActive() {
+      this.isActive = !this.isActive;
     }
+  },
+  components: {
+    Hamburger
   }
 };
 </script>
@@ -73,14 +87,31 @@ export default {
 .nav__icon {
   margin-right: 5px;
 }
-.nav__button-container button {
-  width: 140px;
-  height: 48px;
+.nav__button {
+  width: 120px;
+  height: 40px;
   background: white;
   color: #2163c7;
   border: none;
   border-radius: 5px;
   font-weight: 500;
   cursor: pointer;
+  font-size: 16px;
+}
+@media (max-width: 768px) {
+  .nav {
+    position: relative;
+    overflow: hidden;
+  }
+  .nav__button-container {
+    position: absolute;
+    width: 30%;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+  }
+  .nav__button-container.active {
+    right: 0;
+  }
 }
 </style>
