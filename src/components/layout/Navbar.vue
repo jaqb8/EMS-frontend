@@ -64,7 +64,6 @@ export default {
   height: 70px;
   background: #2b7af0;
   color: #fff;
-  margin-bottom: 2%;
 }
 .nav a {
   color: white;
