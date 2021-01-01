@@ -1,10 +1,9 @@
 import router from '../../router/index';
 import firebase from 'firebase';
 import actionCodeSettings from '../../services/email';
-import { SET_LOADING, SET_USER } from '../auth.types';
+import { SET_LOADING, SET_USER, SET_TOKEN } from '../auth.types';
 
 const state = {
-  token: null,
   loading: false,
   user: null
 };
@@ -28,13 +27,14 @@ const getters = {
 };
 
 const actions = {
-  authAction({ commit }, user) {
+  authAction({ commit, dispatch }, user) {
     if (user) {
       commit(SET_USER, {
         displayName: user.displayName,
         email: user.email,
         emailVerified: user.emailVerified
       });
+      dispatch('setToken');
     } else {
       commit(SET_USER, null);
     }
@@ -56,6 +56,7 @@ const actions = {
               email: user.user.email,
               emailVerified: user.user.emailVerified
             });
+            dispatch('setToken');
             commit(SET_LOADING, false);
             router.push('/');
           });
@@ -83,11 +84,13 @@ const actions = {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(user => {
+        console.log(user);
         commit(SET_USER, {
           displayName: user.user.displayName,
           email: user.user.email,
           emailVerified: user.user.emailVerified
         });
+        dispatch('setToken');
         commit(SET_LOADING, false);
         router.push('/');
       })
@@ -130,6 +133,12 @@ const actions = {
         }
       });
   },
+  setToken({ commit }) {
+    firebase
+      .auth()
+      .currentUser.getIdToken()
+      .then(token => commit(SET_TOKEN, token));
+  },
   sendVerificationEmail({ commit, dispatch }) {
     commit(SET_LOADING, true);
     firebase
@@ -157,6 +166,9 @@ const mutations = {
   },
   [SET_LOADING](state, payload) {
     state.loading = payload;
+  },
+  [SET_TOKEN](state, payload) {
+    state.user.token = payload;
   }
 };
 
