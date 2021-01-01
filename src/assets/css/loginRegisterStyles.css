@@ -67,6 +67,11 @@ form button {
   font-size: 20px;
   cursor: pointer;
 }
+form button:disabled {
+  background: gray;
+  cursor: default;
+}
+
 .create-account {
   width: 60%;
   text-align: center;
