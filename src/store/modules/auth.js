@@ -1,7 +1,7 @@
 import router from '../../router/index';
 import firebase from 'firebase';
 import actionCodeSettings from '../../services/email';
-import { SET_LOADING, SET_USER, SET_TOKEN } from '../auth.types';
+import { SET_LOADING, SET_USER, SET_TOKEN } from '../types';
 
 const state = {
   loading: false,
