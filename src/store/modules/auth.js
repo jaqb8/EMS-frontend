@@ -1,10 +1,9 @@
-import api from '../../services/api';
 import router from '../../router/index';
 import firebase from 'firebase';
 import actionCodeSettings from '../../services/email';
+import { SET_LOADING, SET_USER, SET_TOKEN } from '../auth.types';
 
 const state = {
-  token: null,
   loading: false,
   user: null
 };
@@ -28,55 +27,47 @@ const getters = {
 };
 
 const actions = {
-  authAction({ commit }, user) {
+  authAction({ commit, dispatch }, user) {
     if (user) {
-      commit('SET_USER', {
+      commit(SET_USER, {
         displayName: user.displayName,
         email: user.email,
         emailVerified: user.emailVerified
       });
+      dispatch('setToken');
     } else {
-      commit('SET_USER', null);
+      commit(SET_USER, null);
     }
   },
   register({ commit, dispatch }, payload) {
-    commit('SET_LOADING', true);
-    const newUser = {
-      email: payload.email,
-      password: payload.password
-    };
-
-    api
-      .post('/api/users', newUser)
-      .then(() => {
-        dispatch('login', {
-          email: payload.email,
-          password: payload.password
-        });
-        commit('SET_LOADING', false);
+    commit(SET_LOADING, true);
+    const { email, password } = payload;
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(user => {
+        user.user
+          .updateProfile({
+            displayName: email.split('@')[0]
+          })
+          .then(() => {
+            commit(SET_USER, {
+              displayName: user.user.displayName,
+              email: user.user.email,
+              emailVerified: user.user.emailVerified
+            });
+            dispatch('setToken');
+            commit(SET_LOADING, false);
+            router.push('/');
+          });
       })
       .catch(err => {
-        commit('SET_LOADING', false);
-        const serverError = err.response.data.message;
-        const errors = err.response.data.errors;
-        if (errors) {
-          errors.forEach(error =>
-            dispatch(
-              'alert/setAlert',
-              {
-                msg: error.msg,
-                alertType: 'danger'
-              },
-              {
-                root: true
-              }
-            )
-          );
-        } else if (serverError) {
+        commit(SET_LOADING, false);
+        if (err.message) {
           dispatch(
             'alert/setAlert',
             {
-              msg: serverError,
+              msg: err.message,
               alertType: 'danger'
             },
             {
@@ -88,21 +79,23 @@ const actions = {
   },
   login({ commit, dispatch }, payload) {
     const { email, password } = payload;
-    commit('SET_LOADING', true);
+    commit(SET_LOADING, true);
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(user => {
-        commit('SET_USER', {
+        console.log(user);
+        commit(SET_USER, {
           displayName: user.user.displayName,
           email: user.user.email,
           emailVerified: user.user.emailVerified
         });
-        commit('SET_LOADING', false);
+        dispatch('setToken');
+        commit(SET_LOADING, false);
         router.push('/');
       })
       .catch(err => {
-        commit('SET_LOADING', false);
+        commit(SET_LOADING, false);
         if (err.message) {
           dispatch(
             'alert/setAlert',
@@ -122,7 +115,7 @@ const actions = {
       .auth()
       .signOut()
       .then(() => {
-        commit('SET_USER', null);
+        commit(SET_USER, null);
         router.push('/login');
       })
       .catch(err => {
@@ -140,13 +133,19 @@ const actions = {
         }
       });
   },
+  setToken({ commit }) {
+    firebase
+      .auth()
+      .currentUser.getIdToken()
+      .then(token => commit(SET_TOKEN, token));
+  },
   sendVerificationEmail({ commit, dispatch }) {
-    commit('SET_LOADING', true);
+    commit(SET_LOADING, true);
     firebase
       .auth()
       .currentUser.sendEmailVerification(actionCodeSettings)
       .then(() => {
-        commit('SET_LOADING', false);
+        commit(SET_LOADING, false);
         dispatch(
           'alert/setAlert',
           {
@@ -162,11 +161,14 @@ const actions = {
 };
 
 const mutations = {
-  SET_USER(state, payload) {
+  [SET_USER](state, payload) {
     state.user = payload;
   },
-  SET_LOADING(state, payload) {
+  [SET_LOADING](state, payload) {
     state.loading = payload;
+  },
+  [SET_TOKEN](state, payload) {
+    state.user.token = payload;
   }
 };
 
