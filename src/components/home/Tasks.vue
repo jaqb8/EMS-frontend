@@ -15,6 +15,7 @@
             :taskID="index"
             :taskTitle="task.title"
             :taskStatus="task.status"
+            :taskDescription="task.description"
           ></task-item>
         </li>
       </ul>
@@ -57,8 +58,8 @@ export default {
 .tasksContainer {
   width: 80%;
   margin: 30px auto 0;
-  -webkit-box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.4);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
   border-radius: 20px;
 }
 .tasksHeader {
@@ -100,9 +101,9 @@ export default {
 .tasks ul li {
   /* display: flex; */
   background: #fff;
-  color: #b7b7b7;
-  border-bottom: 0.5px solid #000;
-  line-height: 70px;
+  color: #5f5d5d;
+  border-bottom: 0.5px solid #b7b7b7;
+  line-height: 50px;
   justify-content: unset;
 }
 .tasks ul li:nth-last-child(1) {
