@@ -105,6 +105,7 @@ export default {
   border-bottom: 0.5px solid #b7b7b7;
   line-height: 50px;
   justify-content: unset;
+  font-weight: 600;
 }
 .tasks ul li:nth-last-child(1) {
   border-bottom: unset;

@@ -11,11 +11,19 @@
       </span>
     </div>
     <div class="moreInfo" v-if="isExpanded">
-      <p class="taskDescription">{{ taskDescription }}</p>
-      <div class="action">
-        <span class="material-icons">
-          check_circle
-        </span>
+      <div class="moreInfoHeaders">
+        <p class="moreInfoHeadersTxt">Description</p>
+        <p class="moreInfoHeadersTxt">Mark as done</p>
+      </div>
+      <div class="moreInfoContent">
+        <p class="taskDescription moreInfoContentItem">
+          "{{ taskDescription }}"
+        </p>
+        <div class="action moreInfoContentItem">
+          <span class="material-icons" title="Mark as done">
+            check_circle
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -61,11 +69,44 @@ div.mark span {
 .moreInfo {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
+  line-height: 100%;
+  padding-bottom: 20px;
+}
+.moreInfoHeaders,
+.moreInfoContent {
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 18px;
+}
+.moreInfoHeadersTxt,
+.moreInfoContentItem {
+  display: flex;
+  padding-left: 20px;
+}
+.moreInfoHeadersTxt:first-child,
+.moreInfoContentItem:first-child {
+  width: 60%;
+  margin-left: 10%;
+  padding-left: 50px;
+}
+.moreInfoHeadersTxt:last-child,
+.moreInfoContentItem:last-child {
+  width: 30%;
 }
 .action span {
   color: seagreen;
   font-size: 30px;
+  margin: 0;
+  padding-left: 40px;
+}
+.taskDescription {
+  font-size: 16px;
+  font-weight: 500;
+  font-style: italic;
 }
 </style>
