@@ -1,7 +1,7 @@
 import router from '../../router/index';
 import firebase from 'firebase';
 import actionCodeSettings from '../../services/email';
-import { SET_LOADING, SET_USER, SET_TOKEN } from '../types';
+import { SET_LOADING, SET_USER } from '../types';
 
 const state = {
   loading: false,
@@ -27,94 +27,91 @@ const getters = {
 };
 
 const actions = {
-  authAction({ commit, dispatch }, user) {
+  async authAction({ commit }, user) {
     if (user) {
+      localStorage.setItem('token', await user.getIdToken());
+
       commit(SET_USER, {
         displayName: user.displayName,
         email: user.email,
         emailVerified: user.emailVerified
       });
-      dispatch('setToken');
     } else {
       commit(SET_USER, null);
     }
   },
-  register({ commit, dispatch }, payload) {
-    commit(SET_LOADING, true);
+  async register({ commit, dispatch }, payload) {
     const { email, password } = payload;
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(user => {
-        user.user
-          .updateProfile({
-            displayName: email.split('@')[0]
-          })
-          .then(() => {
-            commit(SET_USER, {
-              displayName: user.user.displayName,
-              email: user.user.email,
-              emailVerified: user.user.emailVerified
-            });
-            dispatch('setToken');
-            commit(SET_LOADING, false);
-            router.push('/');
-          });
-      })
-      .catch(err => {
-        commit(SET_LOADING, false);
-        if (err.message) {
-          dispatch(
-            'alert/setAlert',
-            {
-              msg: err.message,
-              alertType: 'danger'
-            },
-            {
-              root: true
-            }
-          );
-        }
+    commit(SET_LOADING, true);
+
+    try {
+      const user = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      localStorage.setItem('token', await user.user.getIdToken());
+      user.user.updateProfile({ displayName: email.split('@')[0] });
+
+      commit(SET_USER, {
+        displayName: user.user.displayName,
+        email: user.user.email,
+        emailVerified: user.user.emailVerified
       });
+      commit(SET_LOADING, false);
+      router.push('/');
+    } catch (error) {
+      commit(SET_LOADING, false);
+      if (error.message) {
+        dispatch(
+          'alert/setAlert',
+          {
+            msg: error.message,
+            alertType: 'danger'
+          },
+          {
+            root: true
+          }
+        );
+      }
+    }
   },
-  login({ commit, dispatch }, payload) {
+  async login({ commit, dispatch }, payload) {
     const { email, password } = payload;
     commit(SET_LOADING, true);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(user => {
-        console.log(user);
-        commit(SET_USER, {
-          displayName: user.user.displayName,
-          email: user.user.email,
-          emailVerified: user.user.emailVerified
-        });
-        dispatch('setToken');
-        commit(SET_LOADING, false);
-        router.push('/');
-      })
-      .catch(err => {
-        commit(SET_LOADING, false);
-        if (err.message) {
-          dispatch(
-            'alert/setAlert',
-            {
-              msg: err.message,
-              alertType: 'danger'
-            },
-            {
-              root: true
-            }
-          );
-        }
+
+    try {
+      const user = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      localStorage.setItem('token', await user.user.getIdToken());
+      commit(SET_USER, {
+        displayName: user.user.displayName,
+        email: user.user.email,
+        emailVerified: user.user.emailVerified
       });
+      commit(SET_LOADING, false);
+      router.push('/');
+    } catch (error) {
+      commit(SET_LOADING, false);
+      if (error.message) {
+        dispatch(
+          'alert/setAlert',
+          {
+            msg: error.message,
+            alertType: 'danger'
+          },
+          {
+            root: true
+          }
+        );
+      }
+    }
   },
   logout({ commit, dispatch }) {
     firebase
       .auth()
       .signOut()
       .then(() => {
+        localStorage.removeItem('token');
         commit(SET_USER, null);
         router.push('/login');
       })
@@ -132,12 +129,6 @@ const actions = {
           );
         }
       });
-  },
-  setToken({ commit }) {
-    firebase
-      .auth()
-      .currentUser.getIdToken()
-      .then(token => commit(SET_TOKEN, token));
   },
   sendVerificationEmail({ commit, dispatch }) {
     commit(SET_LOADING, true);
@@ -166,9 +157,6 @@ const mutations = {
   },
   [SET_LOADING](state, payload) {
     state.loading = payload;
-  },
-  [SET_TOKEN](state, payload) {
-    state.user.token = payload;
   }
 };
 
