@@ -4,7 +4,7 @@
     <p class="name" title="">
       {{ task.title }}
     </p>
-    <p class="status">{{ taskStatusValue }}</p>
+    <p class="status">{{ task.status }}</p>
     <div class="mark">
       <span class="material-icons" title="More" @click="expandTask">
         expand_more
@@ -20,11 +20,7 @@
           "{{ task.description }}"
         </p>
         <div class="action moreInfoContentItem">
-          <span
-            class="material-icons"
-            title="Mark as done"
-            @click="changeTaskStatus"
-          >
+          <span class="material-icons" title="Mark as done" @click="onUpdate">
             check_circle
           </span>
         </div>
@@ -38,14 +34,11 @@ import { mapActions } from 'vuex';
 export default {
   props: {
     taskIndex: Number,
-    taskID: String,
-    taskStatus: String,
     task: Object
   },
   data() {
     return {
-      isExpanded: false,
-      taskStatusValue: this.task.status
+      isExpanded: false
     };
   },
   methods: {
@@ -53,13 +46,8 @@ export default {
     expandTask() {
       this.isExpanded = !this.isExpanded;
     },
-    async changeTaskStatus() {
-      this.taskStatusValue = 'IN_REVIEW';
-      await this.updateStatus({
-        id: this.taskID,
-        status: this.taskStatusValue
-      });
-      this.$emit('task-status', this.taskID, this.taskStatusValue);
+    onUpdate() {
+      this.updateStatus({ id: this.task.id, status: 'IN_REVIEW' });
     }
   }
 };

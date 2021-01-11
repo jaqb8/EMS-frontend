@@ -11,13 +11,7 @@
       </div>
       <ul>
         <li v-for="(task, index) in tasks" :key="task.id">
-          <task-item
-            :taskIndex="index"
-            :taskID="task.id"
-            :task="task"
-            :taskStatus="task.status"
-            @task-status="updateTaskStatus"
-          ></task-item>
+          <task-item :taskIndex="index" :task="task"></task-item>
         </li>
       </ul>
     </div>
@@ -33,25 +27,17 @@ export default {
   name: 'Tasks',
   data() {
     return {
-      activeLink: 'tasks',
-      tasks: [],
-      taskStatus: '',
-      taskStatusFromChild: '',
-      taskIdFromChild: ''
+      activeLink: 'tasks'
     };
   },
   methods: {
-    ...mapActions('tasks', ['fetchAllTasks'], ['updateStatus']),
-    ...mapGetters('tasks', ['getAllTasks']),
-    updateTaskStatus(taskID, taskStatusValue) {
-      this.taskIdFromChild = taskID;
-      this.taskStatusFromChild = taskStatusValue;
-      console.log(this.taskStatusFromChild);
-    }
+    ...mapActions('tasks', ['fetchAllTasks'])
   },
-  async mounted() {
-    await this.fetchAllTasks();
-    this.tasks = this.getAllTasks();
+  computed: {
+    ...mapGetters('tasks', { tasks: 'getAllTasks' })
+  },
+  mounted() {
+    this.fetchAllTasks();
   }
 };
 </script>

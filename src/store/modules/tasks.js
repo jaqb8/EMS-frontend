@@ -8,9 +8,7 @@ const state = {
 };
 
 const getters = {
-  getAllTasks(state) {
-    return state.tasks;
-  }
+  getAllTasks: state => state.tasks
 };
 
 const actions = {
