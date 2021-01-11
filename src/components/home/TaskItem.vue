@@ -1,10 +1,10 @@
 <template>
   <div class="listItemContainer">
-    <p class="idNumber">{{ taskID + 1 }}</p>
+    <p class="idNumber">{{ taskIndex + 1 }}</p>
     <p class="name" title="">
-      {{ taskTitle }}
+      {{ task.title }}
     </p>
-    <p class="status">{{ taskStatus }}</p>
+    <p class="status">{{ taskStatusValue }}</p>
     <div class="mark">
       <span class="material-icons" title="More" @click="expandTask">
         expand_more
@@ -17,10 +17,14 @@
       </div>
       <div class="moreInfoContent">
         <p class="taskDescription moreInfoContentItem">
-          "{{ taskDescription }}"
+          "{{ task.description }}"
         </p>
         <div class="action moreInfoContentItem">
-          <span class="material-icons" title="Mark as done">
+          <span
+            class="material-icons"
+            title="Mark as done"
+            @click="changeTaskStatus"
+          >
             check_circle
           </span>
         </div>
@@ -30,22 +34,32 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   props: {
-    taskID: Number,
-    taskTitle: String,
-    taskValue: String,
+    taskIndex: Number,
+    taskID: String,
     taskStatus: String,
-    taskDescription: String
+    task: Object
   },
   data() {
     return {
-      isExpanded: false
+      isExpanded: false,
+      taskStatusValue: this.task.status
     };
   },
   methods: {
+    ...mapActions('tasks', ['updateStatus']),
     expandTask() {
       this.isExpanded = !this.isExpanded;
+    },
+    async changeTaskStatus() {
+      this.taskStatusValue = 'IN_REVIEW';
+      await this.updateStatus({
+        id: this.taskID,
+        status: this.taskStatusValue
+      });
+      this.$emit('task-status', this.taskID, this.taskStatusValue);
     }
   }
 };
@@ -103,6 +117,7 @@ div.mark span {
   font-size: 30px;
   margin: 0;
   padding-left: 40px;
+  cursor: pointer;
 }
 .taskDescription {
   font-size: 16px;

@@ -12,10 +12,11 @@
       <ul>
         <li v-for="(task, index) in tasks" :key="task.id">
           <task-item
-            :taskID="index"
-            :taskTitle="task.title"
+            :taskIndex="index"
+            :taskID="task.id"
+            :task="task"
             :taskStatus="task.status"
-            :taskDescription="task.description"
+            @task-status="updateTaskStatus"
           ></task-item>
         </li>
       </ul>
@@ -33,17 +34,24 @@ export default {
   data() {
     return {
       activeLink: 'tasks',
-      tasks: []
+      tasks: [],
+      taskStatus: '',
+      taskStatusFromChild: '',
+      taskIdFromChild: ''
     };
   },
   methods: {
-    ...mapActions('tasks', ['fetchAllTasks']),
-    ...mapGetters('tasks', ['getAllTasks'])
+    ...mapActions('tasks', ['fetchAllTasks'], ['updateStatus']),
+    ...mapGetters('tasks', ['getAllTasks']),
+    updateTaskStatus(taskID, taskStatusValue) {
+      this.taskIdFromChild = taskID;
+      this.taskStatusFromChild = taskStatusValue;
+      console.log(this.taskStatusFromChild);
+    }
   },
   async mounted() {
     await this.fetchAllTasks();
     this.tasks = this.getAllTasks();
-    console.log(this.tasks);
   }
 };
 </script>
