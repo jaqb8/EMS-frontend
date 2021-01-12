@@ -1,7 +1,8 @@
 import router from '../../router/index';
 import firebase from 'firebase';
 import actionCodeSettings from '../../services/email';
-import { SET_LOADING, SET_USER } from '../types';
+import { SET_LOADING, SET_USER, LOGOUT } from '../types';
+import api from '../../services/api';
 
 const state = {
   loading: false,
@@ -27,17 +28,20 @@ const getters = {
 };
 
 const actions = {
-  async authAction({ commit }, user) {
-    if (user) {
-      localStorage.setItem('token', await user.getIdToken());
-
+  async authAction({ commit }, payload) {
+    if (payload) {
+      const token = await payload.getIdToken();
+      if (!api.defaults.headers.authorization) {
+        api.defaults.headers.authorization = `Bearer ${token}`;
+      }
       commit(SET_USER, {
-        displayName: user.displayName,
-        email: user.email,
-        emailVerified: user.emailVerified
+        displayName: payload.displayName,
+        email: payload.email,
+        emailVerified: payload.emailVerified,
+        token
       });
     } else {
-      commit(SET_USER, null);
+      commit(LOGOUT);
     }
   },
   async register({ commit, dispatch }, payload) {
@@ -48,14 +52,9 @@ const actions = {
       const user = await firebase
         .auth()
         .createUserWithEmailAndPassword(email, password);
-      localStorage.setItem('token', await user.user.getIdToken());
       user.user.updateProfile({ displayName: email.split('@')[0] });
+      dispatch('authAction', user.user);
 
-      commit(SET_USER, {
-        displayName: user.user.displayName,
-        email: user.user.email,
-        emailVerified: user.user.emailVerified
-      });
       commit(SET_LOADING, false);
       router.push('/');
     } catch (error) {
@@ -82,12 +81,8 @@ const actions = {
       const user = await firebase
         .auth()
         .signInWithEmailAndPassword(email, password);
-      localStorage.setItem('token', await user.user.getIdToken());
-      commit(SET_USER, {
-        displayName: user.user.displayName,
-        email: user.user.email,
-        emailVerified: user.user.emailVerified
-      });
+      dispatch('authAction', user.user);
+
       commit(SET_LOADING, false);
       router.push('/');
     } catch (error) {
@@ -111,8 +106,7 @@ const actions = {
       .auth()
       .signOut()
       .then(() => {
-        localStorage.removeItem('token');
-        commit(SET_USER, null);
+        commit(LOGOUT);
         router.push('/login');
       })
       .catch(err => {
@@ -153,10 +147,16 @@ const actions = {
 
 const mutations = {
   [SET_USER](state, payload) {
+    localStorage.setItem('token', payload.token);
     state.user = payload;
   },
   [SET_LOADING](state, payload) {
     state.loading = payload;
+  },
+  [LOGOUT](state) {
+    localStorage.removeItem('token');
+    state.user = null;
+    state.token = null;
   }
 };
 
