@@ -6,9 +6,9 @@ import firebase from 'firebase';
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
-import DashboardView from '../components/dashboard/Dashboard.vue';
-import TasksView from '../components/dashboard/Tasks.vue';
-import CalendarView from '../components/dashboard/Calendar.vue';
+import DashboardView from '../components/home/Dashboard.vue';
+import TasksView from '../components/home/Tasks.vue';
+import CalendarView from '../components/home/Calendar.vue';
 
 Vue.use(VueRouter);
 
