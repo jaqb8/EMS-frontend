@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import firebase from 'firebase';
-
-// components
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
 import RegisterView from '../views/RegisterView.vue';
@@ -51,10 +49,6 @@ const router = new VueRouter({
   ]
 });
 
-const app = new Vue({
-  router
-});
-
 router.beforeEach((to, from, next) => {
   const isAuthenticated = firebase.auth().currentUser;
 
@@ -72,7 +66,7 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => record.meta.requiresGuest)) {
     if (isAuthenticated) {
       next({
-        path: '/',
+        path: '/home',
         query: {
           redirect: to.fullPath
         }
