@@ -1,5 +1,5 @@
-import api from '../../services/api';
 import { SET_LOADING, SET_TASKS, UPDATE_TASK } from '../types';
+import api from '../../services/api';
 
 const state = {
   loading: false,

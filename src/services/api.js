@@ -6,7 +6,9 @@ const api = axios.create({
   Accept: 'application/json',
   'Content-Type': 'application/json',
   headers: localStorage.getItem('token')
-    ? { authorization: 'Bearer ' + localStorage.getItem('token') }
+    ? {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
     : {}
 });
 

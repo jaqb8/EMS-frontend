@@ -2,11 +2,11 @@ import router from '../../router/index';
 import firebase from 'firebase';
 import actionCodeSettings from '../../services/email';
 import { SET_LOADING, SET_USER, LOGOUT } from '../types';
-import api from '../../services/api';
 
 const state = {
   loading: false,
-  user: null
+  user: null,
+  token: localStorage.getItem('token') || ''
 };
 
 const getters = {
@@ -28,20 +28,15 @@ const getters = {
 };
 
 const actions = {
-  async authAction({ commit }, payload) {
+  async authAction({ commit, dispatch }, payload) {
     if (payload) {
-      const token = await payload.getIdToken();
-      if (!api.defaults.headers.authorization) {
-        api.defaults.headers.authorization = `Bearer ${token}`;
-      }
       commit(SET_USER, {
         displayName: payload.displayName,
         email: payload.email,
-        emailVerified: payload.emailVerified,
-        token
+        emailVerified: payload.emailVerified
       });
     } else {
-      commit(LOGOUT);
+      dispatch('logout');
     }
   },
   async register({ commit, dispatch }, payload) {
@@ -107,7 +102,6 @@ const actions = {
       .signOut()
       .then(() => {
         commit(LOGOUT);
-        router.push('/login');
       })
       .catch(err => {
         if (err.message) {
@@ -147,7 +141,6 @@ const actions = {
 
 const mutations = {
   [SET_USER](state, payload) {
-    localStorage.setItem('token', payload.token);
     state.user = payload;
   },
   [SET_LOADING](state, payload) {
