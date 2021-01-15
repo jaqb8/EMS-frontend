@@ -7,19 +7,13 @@ import './assets/css/loginRegisterStyles.css';
 import firebase from 'firebase';
 import './utils/firebaseInit';
 import api from './services/api';
+import axios from 'axios';
 
 Vue.config.productionTip = false;
 
 let app;
 
 firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    user.getIdToken().then(token => {
-      localStorage.setItem('token', token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    });
-  }
-
   if (!app) {
     new Vue({
       router,

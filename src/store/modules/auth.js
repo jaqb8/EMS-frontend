@@ -5,8 +5,7 @@ import { SET_LOADING, SET_USER, LOGOUT } from '../types';
 
 const state = {
   loading: false,
-  user: null,
-  token: localStorage.getItem('token') || ''
+  user: null
 };
 
 const getters = {
@@ -147,7 +146,6 @@ const mutations = {
     state.loading = payload;
   },
   [LOGOUT](state) {
-    localStorage.removeItem('token');
     state.user = null;
     state.token = null;
   }
