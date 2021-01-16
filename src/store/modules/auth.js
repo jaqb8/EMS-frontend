@@ -35,7 +35,7 @@ const actions = {
         emailVerified: payload.emailVerified
       });
     } else {
-      dispatch('logout');
+      commit('LOGOUT');
     }
   },
   async register({ commit, dispatch }, payload) {
@@ -101,6 +101,7 @@ const actions = {
       .signOut()
       .then(() => {
         commit(LOGOUT);
+        router.push('/login');
       })
       .catch(err => {
         if (err.message) {

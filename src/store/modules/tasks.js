@@ -1,6 +1,5 @@
 import { SET_LOADING, SET_TASKS, UPDATE_TASK } from '../types';
-import api from '../../services/api';
-import getAxiosHeaders from '../../utils/getAxiosHeaders';
+import axios from 'axios';
 
 const state = {
   loading: false,
@@ -15,7 +14,7 @@ const actions = {
   async fetchAllTasks({ commit }) {
     commit(SET_LOADING, true);
     try {
-      const response = await api.get('/tasks', await getAxiosHeaders());
+      const response = await axios.get('/tasks');
       commit(SET_TASKS, response.data);
       commit(SET_LOADING, false);
     } catch (error) {
@@ -29,11 +28,7 @@ const actions = {
       const body = {
         status: payload.status
       };
-      const response = await api.patch(
-        `/tasks/${payload.id}`,
-        body,
-        await getAxiosHeaders()
-      );
+      const response = await axios.patch(`/tasks/${payload.id}`, body);
       commit(UPDATE_TASK, response.data);
       commit(SET_LOADING, false);
     } catch (error) {
