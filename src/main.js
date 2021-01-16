@@ -18,8 +18,6 @@ const bootstrap = async user => {
     token = await user.getIdToken();
   }
 
-  console.log(token);
-
   if (!app) {
     new Vue({
       router,
@@ -33,8 +31,6 @@ const bootstrap = async user => {
         } else {
           delete axios.defaults.headers.common['Authorization'];
         }
-
-        console.log(axios.defaults);
       }
     }).$mount('#app');
   }
