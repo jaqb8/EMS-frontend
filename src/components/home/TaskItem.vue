@@ -4,7 +4,7 @@
     <p class="name" title="">
       {{ task.title }}
     </p>
-    <p class="status">{{ task.status }}</p>
+    <p class="status">{{ taskStatus }}</p>
     <div class="mark">
       <span class="material-icons" title="More" @click="expandTask">
         expand_more
@@ -40,6 +40,11 @@ export default {
     return {
       isExpanded: false
     };
+  },
+  computed: {
+    taskStatus: function() {
+      return this.task.status.replace('_', ' ');
+    }
   },
   methods: {
     ...mapActions('tasks', ['updateStatus']),

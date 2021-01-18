@@ -96,6 +96,8 @@ const actions = {
     }
   },
   logout({ commit, dispatch }) {
+    dispatch('tasks/clearState', null, { root: true });
+    dispatch('leaves/clearState', null, { root: true });
     firebase
       .auth()
       .signOut()

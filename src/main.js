@@ -27,6 +27,7 @@ const bootstrap = async user => {
         axios.defaults.timeout = 10000;
         if (token) {
           axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          console.log(token);
         } else {
           delete axios.defaults.headers.common['Authorization'];
         }

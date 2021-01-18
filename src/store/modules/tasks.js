@@ -1,10 +1,14 @@
-import { SET_LOADING, SET_TASKS, UPDATE_TASK } from '../types';
+import { CLEAR_STATE, SET_LOADING, SET_TASKS, UPDATE_TASK } from '../types';
 import axios from 'axios';
 
-const state = {
-  loading: false,
-  tasks: []
+const getDefaultState = () => {
+  return {
+    loading: false,
+    tasks: []
+  };
 };
+
+const state = getDefaultState();
 
 const getters = {
   getAllTasks: state => state.tasks
@@ -35,6 +39,9 @@ const actions = {
       commit(SET_LOADING, false);
       console.log(error);
     }
+  },
+  clearState({ commit }) {
+    commit(CLEAR_STATE);
   }
 };
 
@@ -49,6 +56,9 @@ const mutations = {
     state.tasks = state.tasks.map(task =>
       task.id === payload.id ? { ...task, status: payload.status } : task
     );
+  },
+  [CLEAR_STATE](state) {
+    Object.assign(state, getDefaultState());
   }
 };
 
