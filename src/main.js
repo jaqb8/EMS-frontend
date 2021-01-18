@@ -6,7 +6,6 @@ import './assets/css/reset.css';
 import './assets/css/loginRegisterStyles.css';
 import firebase from 'firebase';
 import './utils/firebaseInit';
-import api from './services/api';
 import axios from 'axios';
 
 Vue.config.productionTip = false;
