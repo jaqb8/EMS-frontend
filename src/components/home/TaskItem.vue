@@ -47,7 +47,7 @@ export default {
       this.isExpanded = !this.isExpanded;
     },
     onUpdate() {
-      this.updateStatus({ id: this.task.id, status: 'DONE' });
+      this.updateStatus({ id: this.task.id, status: 'IN_REVIEW' });
     }
   }
 };
