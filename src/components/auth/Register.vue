@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mixin } from '../utils/loginRegisterScripts.js';
+import { mixin } from '../../utils/loginRegisterScripts.js';
 import { mapActions, mapState } from 'vuex';
 import validateEmail from '@/utils/emailValidation.js';
 import Alert from '@/components/layout/Alert';

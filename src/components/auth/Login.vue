@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { mixin } from '../utils/loginRegisterScripts.js';
+import { mixin } from '../../utils/loginRegisterScripts.js';
 import { mapActions, mapState } from 'vuex';
 import Alert from '@/components/layout/Alert';
 import Spinner from '@/components/layout/Spinner';
